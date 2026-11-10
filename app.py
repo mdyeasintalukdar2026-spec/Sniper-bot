@@ -95,7 +95,6 @@ def get_signal():
         current_time = time.time()
         time_slot = int(current_time / 5)
         
-        # ১. নিউজ সেফটি ফিল্টারিং
         is_news_safe = AdvancedAccuracyFilters.check_news_safety("USD")
         if not is_news_safe:
             res = jsonify({
@@ -107,14 +106,12 @@ def get_signal():
             res.headers.add("Access-Control-Allow-Origin", "*")
             return res
 
-        # ২. উভয়মুখী (Bi-Directional) সিগন্যাল অ্যালগরিদম ম্যাট্রিক্স
         trend_calc = (time_slot * 31337 + int(current_time)) % 100
         base_signal = "CALL" if (trend_calc % 2 == 0) else "PUT"
         
         market_ctx = f"Asset: EURUSD_otc, TimeSlot: {time_slot}, Preliminary Trend: {base_signal}"
         ai_decision = GroqAIArbiter.get_ai_decision(market_ctx)
         
-        # ৩. ১ থেকে ১০০% ডায়নামিক একুরেসি গণনা
         real_accuracy = 91 + ((int(current_time * 11) + 17) % 9)
         
         res = jsonify({
@@ -489,7 +486,6 @@ def bot_script():
                 statusBadge.style.background = '#0c4a6e';
                 statusBadge.style.border = '1px solid #0284c7';
 
-                # ফাইভ সেকেন্ড অটো মোডের জন্য মূল হার্টবিট (ECG) স্ক্যানিং অ্যানিমেশন
                 candleBox.innerHTML = 
                     '<div style="position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;background:#05070d;border-radius:4px;overflow:hidden;padding:1px 0;">' +
                         '<div style="position:absolute;top:1px;left:4px;font-size:5.5px;font-weight:900;color:#ef4444;letter-spacing:0.3px;z-index:2;">AI SCANNER</div>' +
@@ -565,7 +561,6 @@ def bot_script():
                 statusBadge.style.background = '#78350f';
                 statusBadge.style.border = '1px solid #f59e0b';
 
-                # ১এম স্ট্যান্ডার্ড মোডের জন্য স্টিল মাল্টি-কালার বার অ্যানিমেশন
                 candleBox.innerHTML = 
                     '<div style="position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0.85);border-radius:5px;padding:4px 6px;box-sizing:border-box;">' +
                         '<div style="font-size:6px;font-weight:900;color:#38bdf8;margin-bottom:2px;letter-spacing:0.5px;">AI SIGNAL ANALYZER</div>' +
