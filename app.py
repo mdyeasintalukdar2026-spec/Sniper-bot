@@ -293,12 +293,12 @@ def bot_script():
                     };
                     d.getElementById('sniper-verify-btn').onclick = function() {
                         var val = d.getElementById('sniper-license-input').value.trim();
-                        if(val.length > 0) {
+                        if(val === "1122334455") {
                             isLicensed = true;
                             panel.remove();
                             toggleSniperPanel();
                         } else {
-                            alert('Please enter a valid key!');
+                            alert('Invalid Password! Please use correct key.');
                         }
                     };
                     return;
@@ -445,23 +445,23 @@ def bot_script():
                 var header = d.getElementById('sniper-panel-header');
                 if(!header) return;
                 var pX = 0, pY = 0, mX = 0, mY = 0;
-                header.onmousedown = function(e) {
-                    e.preventDefault();
-                    mX = e.clientX; mY = e.clientY;
-                    d.onmouseup = closeDragElement;
-                    d.onmousemove = elementDrag;
+                header.onmousedown = header.ontouchstart = function(e) {
+                    var p = e.touches ? e.touches[0] : e;
+                    mX = p.clientX; mY = p.clientY;
+                    d.onmouseup = d.ontouchend = closeDragElement;
+                    d.onmousemove = d.ontouchmove = elementDrag;
                 };
                 function elementDrag(e) {
-                    e.preventDefault();
-                    pX = mX - e.clientX; pY = mY - e.clientY;
-                    mX = e.clientX; mY = e.clientY;
+                    var p = e.touches ? e.touches[0] : e;
+                    pX = mX - p.clientX; pY = mY - p.clientY;
+                    mX = p.clientX; mY = p.clientY;
                     panelEl.style.top = (panelEl.offsetTop - pY) + "px";
                     panelEl.style.left = (panelEl.offsetLeft - pX) + "px";
                     panelEl.style.transform = 'none';
                 }
                 function closeDragElement() {
-                    d.onmouseup = null;
-                    d.onmousemove = null;
+                    d.onmouseup = d.ontouchend = null;
+                    d.onmousemove = d.ontouchmove = null;
                 }
             }
 
@@ -537,7 +537,7 @@ def bot_script():
                         if(autoLoopActive && currentMode === "5S") {
                             autoTimer = setTimeout(function(){
                                 if(autoLoopActive && currentMode === "5S") run5sAutoSequence(panel);
-                            }, 5000);
+                            }, 6000);
                         }
                     }, 5000);
                 });
@@ -648,7 +648,7 @@ def bot_script():
                     }
                 }
 
-                setTimeout(function(){ isExecutionLocked = false; }, 3500);
+                setTimeout(function(){ isExecutionLocked = false; }, 4000);
             }
 
         } catch(e) { console.error("SNIPER BOT Error:", e); }
