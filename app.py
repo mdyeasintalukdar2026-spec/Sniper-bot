@@ -63,29 +63,24 @@ def bot_script():
             var s = d.createElement('style');
             s.id = 'sniper-bot-style';
             s.innerHTML = '@keyframes sniperGlowPulse {' +
-                          '0% { box-shadow: 0 0 16px rgba(34,197,94,0.6), inset 0 0 10px rgba(34,197,94,0.3); border-color: #22c55e; }' +
-                          '50% { box-shadow: 0 0 30px rgba(56,189,248,0.95), inset 0 0 18px rgba(56,189,248,0.6); border-color: #38bdf8; }' +
-                          '100% { box-shadow: 0 0 16px rgba(34,197,94,0.6), inset 0 0 10px rgba(34,197,94,0.3); border-color: #22c55e; }' +
+                          '0% { box-shadow: 0 0 16px rgba(34,197,94,0.6), inset 0 0 10px rgba(34,197,94,0.3); border-color: #22c55e; filter: hue-rotate(0deg); }' +
+                          '50% { box-shadow: 0 0 30px rgba(56,189,248,0.95), inset 0 0 18px rgba(56,189,248,0.6); border-color: #38bdf8; filter: hue-rotate(180deg); }' +
+                          '100% { box-shadow: 0 0 16px rgba(34,197,94,0.6), inset 0 0 10px rgba(34,197,94,0.3); border-color: #22c55e; filter: hue-rotate(360deg); }' +
                           '}' +
-                          '@keyframes videoScannerMotion {' +
-                          '0% { stroke-dashoffset: 0; transform: scaleY(1); filter: drop-shadow(0 0 5px #38bdf8); }' +
-                          '50% { stroke-dashoffset: 30; transform: scaleY(1.3); filter: drop-shadow(0 0 9px #22c55e); }' +
-                          '100% { stroke-dashoffset: 60; transform: scaleY(1); filter: drop-shadow(0 0 5px #ef4444); }' +
+                          '@keyframes heartBeatSnakeMotion {' +
+                          '0% { stroke-dashoffset: 0; transform: scaleY(1); filter: drop-shadow(0 0 6px #38bdf8); }' +
+                          '50% { stroke-dashoffset: 35; transform: scaleY(1.4); filter: drop-shadow(0 0 10px #22c55e); }' +
+                          '100% { stroke-dashoffset: 70; transform: scaleY(1); filter: drop-shadow(0 0 6px #ef4444); }' +
                           '}' +
                           '@keyframes nodeCenterGlow {' +
-                          '0% { transform: scale(0.9); opacity: 0.7; }' +
-                          '50% { transform: scale(1.25); opacity: 1; box-shadow: 0 0 12px #38bdf8; }' +
-                          '100% { transform: scale(0.9); opacity: 0.7; }' +
+                          '0% { transform: scale(0.85); opacity: 0.6; }' +
+                          '50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 14px #38bdf8; }' +
+                          '100% { transform: scale(0.85); opacity: 0.6; }' +
                           '}' +
-                          '@keyframes fireRingSpin {' +
-                          '0% { transform: rotate(0deg) scale(1); filter: hue-rotate(0deg); }' +
-                          '50% { transform: rotate(180deg) scale(1.08); filter: hue-rotate(180deg); }' +
-                          '100% { transform: rotate(360deg) scale(1); filter: hue-rotate(360deg); }' +
-                          '}' +
-                          '@keyframes slowCandleShift {' +
-                          '0% { transform: scaleY(0.95); }' +
-                          '50% { transform: scaleY(1.08); }' +
-                          '100% { transform: scaleY(0.95); }' +
+                          '@keyframes sharpCandleShift {' +
+                          '0% { transform: scaleY(0.96); }' +
+                          '50% { transform: scaleY(1.06); }' +
+                          '100% { transform: scaleY(0.96); }' +
                           '}' +
                           '@keyframes candlePopIn {' +
                           '0% { transform: scale(0.3); opacity: 0; }' +
@@ -99,7 +94,6 @@ def bot_script():
             var currentMode = "1M";
             var autoLoopActive = false;
             var autoTimer = null;
-            var tradeCountdownActive = false;
 
             function createBotIcon() {
                 var wrap = d.getElementById('sniper-bot-btn') || d.createElement('div');
@@ -131,7 +125,7 @@ def bot_script():
 
             function detectMarketAndPayout() {
                 var marketName = "EURUSD (OTC)";
-                var payout = "78%";
+                var payout = "83%";
                 
                 var selectors = ['.asset-select__button', '.asset-name', '.chart-title', '.asset-select__short-name', '[class*="asset-select"]', '.deal-asset'];
                 for(var i=0; i<selectors.length; i++){
@@ -156,7 +150,7 @@ def bot_script():
                             break;
                         }
                     }
-                    if(payout !== "78%") break;
+                    if(payout !== "83%") break;
                 }
 
                 return marketName + " " + payout;
@@ -169,7 +163,6 @@ def bot_script():
                 var marketInfo = detectMarketAndPayout();
                 var panel = d.createElement('div');
                 panel.id = 'sniper-bot-panel';
-                // Perfectly proportioned compact panel
                 panel.style.cssText = 'position:fixed;top:44%;left:50%;transform:translate(-50%, -50%);width:212px;background:linear-gradient(180deg, rgba(7, 11, 20, 0.98), rgba(3, 5, 11, 0.99));border:2px solid #22c55e;border-radius:11px;box-shadow:0 10px 30px rgba(0,0,0,0.95);z-index:2147483647;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;color:#fff;overflow:hidden;animation:panelFadeIn 0.2s ease-out;box-sizing:border-box;backdrop-filter:blur(8px);';
 
                 if(!isLicensed) {
@@ -228,25 +221,24 @@ def bot_script():
                                 '<button id="mode-5s" style="flex:1;background:rgba(255,255,255,0.08);color:#94a3b8;border:none;border-radius:3.5px;padding:3.5px;font-size:7px;font-weight:900;cursor:pointer;">5s Auto Mode</button>' +
                             '</div>' +
 
-                            // Auto Start (Green) / Auto Stop (Red) Buttons
+                            // Auto Start (Green) / Auto Stop (Red) Buttons - 15-20% Smaller
                             '<div id="auto-controls-container" style="display:none;gap:3px;margin-bottom:4px;transition:all 0.3s ease;">' +
-                                '<button id="start-auto-btn" style="flex:1;background:#22c55e;color:#000;border:none;border-radius:2.5px;padding:2.5px 4px;font-size:6px;font-weight:900;cursor:pointer;box-shadow:0 0 4px rgba(34,197,94,0.5);">Auto Start</button>' +
-                                '<button id="stop-auto-btn" style="flex:1;background:#ef4444;color:#fff;border:none;border-radius:2.5px;padding:2.5px 4px;font-size:6px;font-weight:900;cursor:pointer;box-shadow:0 0 4px rgba(239,68,68,0.5);">Auto Stop</button>' +
+                                '<button id="start-auto-btn" style="flex:1;background:#22c55e;color:#000;border:none;border-radius:2px;padding:2px 3px;font-size:5.5px;font-weight:900;cursor:pointer;box-shadow:0 0 4px rgba(34,197,94,0.5);">Auto Start</button>' +
+                                '<button id="stop-auto-btn" style="flex:1;background:#ef4444;color:#fff;border:none;border-radius:2px;padding:2px 3px;font-size:5.5px;font-weight:900;cursor:pointer;box-shadow:0 0 4px rgba(239,68,68,0.5);">Auto Stop</button>' +
                             '</div>' +
 
-                            // Next Candle Section with thicker candles and wider gaps to fill the box edges completely
+                            // Next Candle Section with sharp, clear standing candles and proper gaps
                             '<div style="text-align:center;margin-bottom:5px;">' +
                                 '<div style="font-size:8px;font-weight:700;color:#22c55e;margin-bottom:2px;letter-spacing:0.3px;">Next Candle??</div>' +
-                                '<div id="sniper-candle-display-box" style="display:flex;align-items:center;justify-content:space-evenly;height:52px;background:rgba(0,0,0,0.65);border-radius:5px;padding:4px 8px;border:1px solid rgba(56,189,248,0.4);box-shadow:inset 0 0 10px rgba(0,0,0,0.9);">' +
-                                    // 8 thick standing candles with wider gaps filling left & right edges
-                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:slowCandleShift 1.8s infinite ease-in-out;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5.5px;height:26px;background:#22c55e;border-radius:1px;box-shadow:0 0 6px #22c55e;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
-                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:slowCandleShift 1.8s infinite ease-in-out 0.2s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5.5px;height:30px;background:#ef4444;border-radius:1px;box-shadow:0 0 6px #ef4444;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
-                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:slowCandleShift 1.8s infinite ease-in-out 0.4s;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5.5px;height:22px;background:#22c55e;border-radius:1px;box-shadow:0 0 6px #22c55e;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
-                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:slowCandleShift 1.8s infinite ease-in-out 0.6s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5.5px;height:34px;background:#ef4444;border-radius:1px;box-shadow:0 0 6px #ef4444;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
-                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:slowCandleShift 1.8s infinite ease-in-out 0.8s;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5.5px;height:28px;background:#22c55e;border-radius:1px;box-shadow:0 0 6px #22c55e;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
-                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:slowCandleShift 1.8s infinite ease-in-out 1.0s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5.5px;height:24px;background:#ef4444;border-radius:1px;box-shadow:0 0 6px #ef4444;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
-                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:slowCandleShift 1.8s infinite ease-in-out 1.2s;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5.5px;height:32px;background:#22c55e;border-radius:1px;box-shadow:0 0 6px #22c55e;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
-                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:slowCandleShift 1.8s infinite ease-in-out 1.4s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5.5px;height:27px;background:#ef4444;border-radius:1px;box-shadow:0 0 6px #ef4444;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
+                                '<div id="sniper-candle-display-box" style="display:flex;align-items:center;justify-content:space-evenly;height:52px;background:rgba(0,0,0,0.7);border-radius:5px;padding:4px 6px;border:1px solid rgba(56,189,248,0.45);box-shadow:inset 0 0 10px rgba(0,0,0,0.9);">' +
+                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:sharpCandleShift 2s infinite ease-in-out;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5px;height:26px;background:#22c55e;border-radius:1px;box-shadow:0 0 6px #22c55e;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
+                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:sharpCandleShift 2s infinite ease-in-out 0.25s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5px;height:30px;background:#ef4444;border-radius:1px;box-shadow:0 0 6px #ef4444;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
+                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:sharpCandleShift 2s infinite ease-in-out 0.5s;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5px;height:22px;background:#22c55e;border-radius:1px;box-shadow:0 0 6px #22c55e;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
+                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:sharpCandleShift 2s infinite ease-in-out 0.75s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5px;height:34px;background:#ef4444;border-radius:1px;box-shadow:0 0 6px #ef4444;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
+                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:sharpCandleShift 2s infinite ease-in-out 1.0s;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5px;height:28px;background:#22c55e;border-radius:1px;box-shadow:0 0 6px #22c55e;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
+                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:sharpCandleShift 2s infinite ease-in-out 1.25s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5px;height:24px;background:#ef4444;border-radius:1px;box-shadow:0 0 6px #ef4444;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
+                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:sharpCandleShift 2s infinite ease-in-out 1.5s;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5px;height:32px;background:#22c55e;border-radius:1px;box-shadow:0 0 6px #22c55e;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
+                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:sharpCandleShift 2s infinite ease-in-out 1.75s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5px;height:27px;background:#ef4444;border-radius:1px;box-shadow:0 0 6px #ef4444;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
                                 '</div>' +
                             '</div>' +
 
@@ -261,38 +253,24 @@ def bot_script():
                             '</div>' +
                         '</div>' +
 
-                        // Bottom Footer with Live Detected Market and Quotex Live Timezone / Trade Countdown
+                        // Bottom Footer with Live Detected Market and Quotex Live Timezone
                         '<div style="display:flex;justify-content:space-between;align-items:center;font-size:7px;color:#94a3b8;border-top:1px solid rgba(255,255,255,0.06);padding-top:3px;">' +
                             '<span id="sniper-market-display" style="color:#38bdf8;font-weight:bold;">' + marketInfo + '</span>' +
-                            '<span id="sniper-live-timer" style="color:#22c55e;font-weight:900;background:rgba(34,197,94,0.12);padding:1px 3px;border-radius:2.5px;">14:05:49</span>' +
+                            '<span id="sniper-live-timer" style="color:#22c55e;font-weight:900;background:rgba(34,197,94,0.12);padding:1px 3px;border-radius:2.5px;">14:28:20</span>' +
                         '</div>' +
                     '</div>';
 
                 d.body.appendChild(panel);
 
-                // Live Clock / Timezone & Trade Countdown Loop
-                var tradeCountdownVal = 5;
+                // Live Quotex Clock / Timezone Loop
                 setInterval(function(){
                     var tmEl = d.getElementById('sniper-live-timer');
                     if(tmEl) {
-                        if(tradeCountdownActive) {
-                            tradeCountdownVal--;
-                            if(tradeCountdownVal < 0) {
-                                tradeCountdownVal = 5;
-                                tradeCountdownActive = false;
-                            }
-                            tmEl.innerText = '00:00:' + (tradeCountdownVal < 10 ? '0' + tradeCountdownVal : tradeCountdownVal);
-                            tmEl.style.color = '#ef4444';
-                            tmEl.style.background = 'rgba(239,68,68,0.18)';
-                        } else {
-                            var now = new Date();
-                            var hrs = String(now.getHours()).padStart(2, '0');
-                            var mins = String(now.getMinutes()).padStart(2, '0');
-                            var secs = String(now.getSeconds()).padStart(2, '0');
-                            tmEl.innerText = hrs + ':' + mins + ':' + secs;
-                            tmEl.style.color = '#22c55e';
-                            tmEl.style.background = 'rgba(34,197,94,0.12)';
-                        }
+                        var now = new Date();
+                        var hrs = String(now.getHours()).padStart(2, '0');
+                        var mins = String(now.getMinutes()).padStart(2, '0');
+                        var secs = String(now.getSeconds()).padStart(2, '0');
+                        tmEl.innerText = hrs + ':' + mins + ':' + secs;
                     }
                 }, 1000);
 
@@ -329,10 +307,9 @@ def bot_script():
 
                 function stopAutoExecution() {
                     autoLoopActive = false;
-                    tradeCountdownActive = false;
                     if(autoTimer) clearInterval(autoTimer);
                     var statusBadge = panel.querySelector('#sniper-status-badge');
-                    if(statusBadge) { statusBadge.innerText = 'READY'; statusBadge.style.color = '#22c55e'; statusBadge.style.background = 'rgba(34,197,94,0.18)'; }
+                    if(statusBadge) { statusBadge.innerText = 'READY'; statusBadge.style.color = '#22c55e'; statusBadge.style.background = 'rgba(34,197,94,0.18);'; }
                 }
 
                 d.getElementById('sniper-close-btn').onclick = function() {
@@ -355,14 +332,14 @@ def bot_script():
                 statusBadge.style.color = '#38bdf8';
                 statusBadge.style.background = 'rgba(56,189,248,0.2)';
 
-                // Exact video scanner layout with center node and wavy sine threads
+                // Heartbeat ECG & Harmonious Snake Wavy Scanner Layout
                 candleBox.innerHTML = 
                     '<div style="position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;">' +
                         '<div style="position:absolute;top:2px;left:5px;font-size:7px;font-weight:900;color:#38bdf8;letter-spacing:0.5px;">AI SIGNAL SCANNER</div>' +
                         '<div style="position:absolute;width:10px;height:10px;background:#38bdf8;border-radius:50%;animation:nodeCenterGlow 1s infinite ease-in-out;box-shadow:0 0 10px #38bdf8;"></div>' +
                         '<svg width="100%" height="100%" viewBox="0 0 200 52" preserveAspectRatio="none" style="overflow:visible;">' +
-                            '<path d="M 0 26 Q 25 4, 50 26 T 100 26 T 150 26 T 200 26" fill="none" stroke="#22c55e" stroke-width="3" style="animation:videoScannerMotion 1.2s linear infinite;" />' +
-                            '<path d="M 0 26 Q 25 48, 50 26 T 100 26 T 150 26 T 200 26" fill="none" stroke="#38bdf8" stroke-width="2.5" style="animation:videoScannerMotion 1.5s linear infinite;" />' +
+                            '<path d="M 0 26 Q 25 2, 50 26 T 100 26 T 150 26 T 200 26" fill="none" stroke="#22c55e" stroke-width="3" style="animation:heartBeatSnakeMotion 1.4s linear infinite;" />' +
+                            '<path d="M 0 26 Q 25 50, 50 26 T 100 26 T 150 26 T 200 26" fill="none" stroke="#38bdf8" stroke-width="2.5" style="animation:heartBeatSnakeMotion 1.8s linear infinite;" />' +
                         '</svg>' +
                     '</div>';
 
@@ -407,10 +384,7 @@ def bot_script():
                                 '<div style="width:15px;height:26px;background:' + candleColor + ';border-radius:2.5px;z-index:2;box-shadow:0 0 12px ' + candleColor + ';"></div>' +
                             '</div>';
 
-                        // Trigger trade execution and start 5s trade countdown at bottom right
                         executeTrade(isCall);
-                        tradeCountdownActive = true;
-                        tradeCountdownVal = 5;
                     }, 1600);
                 });
             }
@@ -424,11 +398,10 @@ def bot_script():
                 statusBadge.style.color = '#facc15';
                 statusBadge.style.background = 'rgba(250,204,21,0.18)';
 
-                // Circular fire/electrical spinning ring scanner with AI SIGNAL SCANNER text
                 candleBox.innerHTML = 
                     '<div style="position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;">' +
                         '<div style="position:absolute;top:2px;left:5px;font-size:7px;font-weight:900;color:#facc15;letter-spacing:0.5px;">AI SIGNAL SCANNER</div>' +
-                        '<div style="width:34px;height:34px;border:3px dashed #facc15;border-top:3px solid #38bdf8;border-radius:50%;animation:fireRingSpin 1s infinite linear;box-shadow:0 0 12px #facc15;"></div>' +
+                        '<div style="width:34px;height:34px;border:3px dashed #facc15;border-top:3px solid #38bdf8;border-radius:50%;animation:sniperGlowPulse 1.2s infinite linear;box-shadow:0 0 12px #facc15;"></div>' +
                         '<div style="position:absolute;font-size:8px;font-weight:900;color:#38bdf8;">⚡</div>' +
                     '</div>';
 
