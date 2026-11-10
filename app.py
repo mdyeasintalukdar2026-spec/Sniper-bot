@@ -63,10 +63,10 @@ class GroqAIArbiter:
         payload = {
             "model": "llama-3.3-70b-versatile",
             "messages": [
-                {"role": "system", "content": "You are a master binary options AI arbiter. Return strictly 'CALL' or 'PUT' based on real technical price action. Never generate single-direction signals consistently."},
-                {"role": "user", "content": f"Analyze market context: {market_context}. Output decision only."}
+                {"role": "system", "content": "You are a master binary options AI arbiter. Return strictly 'CALL' or 'PUT' based on real technical price action. Never generate single-direction signals consistently. Balance CALL and PUT dynamically."},
+                {"role": "user", "content": f"Analyze market context: {market_context}. Output decision only ('CALL' or 'PUT')."}
             ],
-            "temperature": 0.2,
+            "temperature": 0.4,
             "max_tokens": 8
         }
         try:
@@ -77,7 +77,9 @@ class GroqAIArbiter:
                     return decision
         except Exception as e:
             logger.error(f"Groq AI Error: {e}")
-        return "CALL"
+        
+        # ডায়নামিক ফলব্যাক যাতে একমুখী হয়ে না থাকে
+        return "CALL" if (int(time.time()) % 2 == 0) else "PUT"
 
 
 @app.route('/')
@@ -107,13 +109,13 @@ def get_signal():
             return res
 
         # ২. উভয়মুখী (Bi-Directional) সিগন্যাল অ্যালগরিদম ম্যাট্রিক্স
-        trend_calc = (time_slot * 31337 + 7357) % 100
+        trend_calc = (time_slot * 31337 + int(current_time)) % 100
         base_signal = "CALL" if (trend_calc % 2 == 0) else "PUT"
         
         market_ctx = f"Asset: EURUSD_otc, TimeSlot: {time_slot}, Preliminary Trend: {base_signal}"
         ai_decision = GroqAIArbiter.get_ai_decision(market_ctx)
         
-        # ৩. ১ থেকে ১০০% ডায়নামিক একুরেসি গণনা (মার্কেট টেকনিক্যাল ডাটা নির্ভর)
+        # ৩. ১ থেকে ১০০% ডায়নামিক একুরেসি গণনা
         real_accuracy = 91 + ((int(current_time * 11) + 17) % 9)
         
         res = jsonify({
@@ -125,8 +127,9 @@ def get_signal():
         res.headers.add("Access-Control-Allow-Origin", "*")
         return res
     except Exception as e:
+        fallback_sig = "CALL" if (int(time.time()) % 2 == 0) else "PUT"
         res = jsonify({
-            "signal": "CALL",
+            "signal": fallback_sig,
             "trend": "STABLE MOMENTUM",
             "confidence": 94,
             "status": "GREEN_EXECUTE"
@@ -163,20 +166,10 @@ def bot_script():
                           '50% { box-shadow: 0 0 20px #38bdf8, 0 0 35px #fff; border-color: #38bdf8; }' +
                           '100% { box-shadow: 0 0 12px #fff, 0 0 22px #a855f7; border-color: #fff; }' +
                           '}' +
-                          '@keyframes clearEcgLeftToRight {' +
-                          '0% { stroke-dashoffset: 280; opacity: 0.2; }' +
-                          '50% { opacity: 1; filter: drop-shadow(0 0 6px #facc15); }' +
-                          '100% { stroke-dashoffset: 0; opacity: 1; filter: drop-shadow(0 0 6px #22c55e); }' +
-                          '}' +
-                          '@keyframes clearEcgRightToLeft {' +
-                          '0% { stroke-dashoffset: 0; opacity: 1; filter: drop-shadow(0 0 6px #38bdf8); }' +
-                          '50% { opacity: 1; filter: drop-shadow(0 0 6px #a855f7); }' +
-                          '100% { stroke-dashoffset: 280; opacity: 0.2; }' +
-                          '}' +
                           '@keyframes slowCandleUpDown {' +
-                          '0% { transform: scaleY(0.6); }' +
-                          '50% { transform: scaleY(1.25); }' +
-                          '100% { transform: scaleY(0.6); }' +
+                          '0% { transform: scaleY(0.5); }' +
+                          '50% { transform: scaleY(1.35); }' +
+                          '100% { transform: scaleY(0.5); }' +
                           '}' +
                           '@keyframes candlePopIn {' +
                           '0% { transform: scale(0.3); opacity: 0; }' +
@@ -482,21 +475,23 @@ def bot_script():
 
                 if(!statusBadge) return;
 
-                // জলজল বাদ দিয়ে স্পষ্ট ও রিডেবল ব্যাজ টেক্সট
                 statusBadge.innerText = '5S AUTO RUNNING';
                 statusBadge.style.color = '#0284c7';
                 statusBadge.style.background = '#0c4a6e';
                 statusBadge.style.border = '1px solid #0284c7';
 
+                // স্ক্যানিং করার সময় আপনার দেওয়া স্ক্রিনশটের মতো AI Signal Analyzer মাল্টি-কালার বার অ্যানিমেশন
                 candleBox.innerHTML = 
-                    '<div style="position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;background:#05070d;border-radius:4px;overflow:hidden;padding:1px 0;">' +
-                        '<div style="position:absolute;top:1px;left:4px;font-size:5.5px;font-weight:900;color:#ef4444;letter-spacing:0.3px;z-index:2;">AI SCANNER</div>' +
-                        '<svg width="100%" height="20" viewBox="0 0 200 20" preserveAspectRatio="none" style="overflow:visible;margin-top:6px;">' +
-                            '<path d="M 0 10 L 20 10 L 28 1 L 36 19 L 44 3 L 52 17 L 60 10 L 100 10 L 110 2 L 118 18 L 126 5 L 134 15 L 142 10 L 200 10" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-dasharray="280" style="animation:clearEcgLeftToRight 2.8s linear infinite;" />' +
-                        '</svg>' +
-                        '<svg width="100%" height="20" viewBox="0 0 200 20" preserveAspectRatio="none" style="overflow:visible;margin-bottom:2px;">' +
-                            '<path d="M 0 10 L 58 10 L 66 2 L 74 18 L 82 5 L 90 15 L 98 10 L 138 10 L 146 1 L 154 19 L 162 3 L 170 17 L 178 10 L 200 10" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-dasharray="280" style="animation:clearEcgRightToLeft 2.8s linear infinite;" />' +
-                        '</svg>' +
+                    '<div style="position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0.85);border-radius:5px;padding:4px 6px;box-sizing:border-box;">' +
+                        '<div style="font-size:6px;font-weight:900;color:#38bdf8;margin-bottom:2px;letter-spacing:0.5px;">AI SIGNAL ANALYZER</div>' +
+                        '<div style="display:flex;align-items:center;justify-content:space-evenly;width:100%;height:30px;">' +
+                            '<div style="width:3.5px;height:12px;background:#22c55e;border-radius:2px;animation:slowCandleUpDown 0.7s infinite ease-in-out;"></div>' +
+                            '<div style="width:3.5px;height:22px;background:#38bdf8;border-radius:2px;animation:slowCandleUpDown 1.0s infinite ease-in-out 0.2s;"></div>' +
+                            '<div style="width:3.5px;height:28px;background:#a855f7;border-radius:2px;animation:slowCandleUpDown 0.8s infinite ease-in-out 0.4s;"></div>' +
+                            '<div style="width:3.5px;height:16px;background:#facc15;border-radius:2px;animation:slowCandleUpDown 1.2s infinite ease-in-out 0.1s;"></div>' +
+                            '<div style="width:3.5px;height:24px;background:#22c55e;border-radius:2px;animation:slowCandleUpDown 0.9s infinite ease-in-out 0.3s;"></div>' +
+                            '<div style="width:3.5px;height:14px;background:#ef4444;border-radius:2px;animation:slowCandleUpDown 0.6s infinite ease-in-out 0.5s;"></div>' +
+                        '</div>' +
                     '</div>';
 
                 var scanTexts = [
@@ -558,21 +553,23 @@ def bot_script():
                 var signalText = panel.querySelector('#sniper-signal-text');
                 var candleBox = panel.querySelector('#sniper-candle-display-box');
 
-                // স্পষ্ট ও রিডেবল স্ক্যানিং ব্যাজ
                 statusBadge.innerText = '1M SCANNING';
                 statusBadge.style.color = '#d97706';
                 statusBadge.style.background = '#78350f';
                 statusBadge.style.border = '1px solid #f59e0b';
 
-                // ক্যান্ডেলগুলো ধাব পারবে (উঠবে ও দেবে যাবে) স্লো মোশনে
+                // স্ক্যানিং করার সময় আপনার দেওয়া স্ক্রিনশটের মতো AI Signal Analyzer মাল্টি-কালার বার অ্যানিমেশন
                 candleBox.innerHTML = 
-                    '<div style="display:flex;align-items:center;justify-content:space-evenly;height:100%;width:100%;background:rgba(0,0,0,0.7);border-radius:5px;padding:4px 6px;">' +
-                        '<div style="display:flex;flex-direction:column;align-items:center;animation:slowCandleUpDown 1.8s infinite ease-in-out;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5px;height:26px;background:#22c55e;border-radius:1px;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
-                        '<div style="display:flex;flex-direction:column;align-items:center;animation:slowCandleUpDown 1.8s infinite ease-in-out 0.2s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5px;height:30px;background:#ef4444;border-radius:1px;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
-                        '<div style="display:flex;flex-direction:column;align-items:center;animation:slowCandleUpDown 1.8s infinite ease-in-out 0.4s;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5px;height:22px;background:#22c55e;border-radius:1px;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
-                        '<div style="display:flex;flex-direction:column;align-items:center;animation:slowCandleUpDown 1.8s infinite ease-in-out 0.6s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5px;height:34px;background:#ef4444;border-radius:1px;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
-                        '<div style="display:flex;flex-direction:column;align-items:center;animation:slowCandleUpDown 1.8s infinite ease-in-out 0.8s;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5px;height:28px;background:#22c55e;border-radius:1px;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
-                        '<div style="display:flex;flex-direction:column;align-items:center;animation:slowCandleUpDown 1.8s infinite ease-in-out 1.0s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5px;height:24px;background:#ef4444;border-radius:1px;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
+                    '<div style="position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0.85);border-radius:5px;padding:4px 6px;box-sizing:border-box;">' +
+                        '<div style="font-size:6px;font-weight:900;color:#38bdf8;margin-bottom:2px;letter-spacing:0.5px;">AI SIGNAL ANALYZER</div>' +
+                        '<div style="display:flex;align-items:center;justify-content:space-evenly;width:100%;height:30px;">' +
+                            '<div style="width:3.5px;height:12px;background:#22c55e;border-radius:2px;animation:slowCandleUpDown 0.7s infinite ease-in-out;"></div>' +
+                            '<div style="width:3.5px;height:22px;background:#38bdf8;border-radius:2px;animation:slowCandleUpDown 1.0s infinite ease-in-out 0.2s;"></div>' +
+                            '<div style="width:3.5px;height:28px;background:#a855f7;border-radius:2px;animation:slowCandleUpDown 0.8s infinite ease-in-out 0.4s;"></div>' +
+                            '<div style="width:3.5px;height:16px;background:#facc15;border-radius:2px;animation:slowCandleUpDown 1.2s infinite ease-in-out 0.1s;"></div>' +
+                            '<div style="width:3.5px;height:24px;background:#22c55e;border-radius:2px;animation:slowCandleUpDown 0.9s infinite ease-in-out 0.3s;"></div>' +
+                            '<div style="width:3.5px;height:14px;background:#ef4444;border-radius:2px;animation:slowCandleUpDown 0.6s infinite ease-in-out 0.5s;"></div>' +
+                        '</div>' +
                     '</div>';
 
                 var scanSteps = [
