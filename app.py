@@ -68,14 +68,19 @@ def bot_script():
                           '100% { box-shadow: 0 0 16px rgba(34,197,94,0.6), inset 0 0 10px rgba(34,197,94,0.3); border-color: #22c55e; filter: hue-rotate(360deg); }' +
                           '}' +
                           '@keyframes clearEcgLeftToRight {' +
-                          '0% { stroke-dashoffset: 280; opacity: 0.2; }' +
-                          '30% { opacity: 1; filter: drop-shadow(0 0 8px #ef4444); }' +
-                          '100% { stroke-dashoffset: 0; opacity: 1; filter: drop-shadow(0 0 8px #22c55e); }' +
+                          '0% { stroke-dashoffset: 280; filter: drop-shadow(0 0 4px #ef4444); }' +
+                          '50% { filter: drop-shadow(0 0 8px #facc15); }' +
+                          '100% { stroke-dashoffset: 0; filter: drop-shadow(0 0 4px #22c55e); }' +
                           '}' +
                           '@keyframes clearEcgRightToLeft {' +
-                          '0% { stroke-dashoffset: 0; opacity: 1; filter: drop-shadow(0 0 8px #38bdf8); }' +
-                          '70% { opacity: 1; filter: drop-shadow(0 0 8px #a855f7); }' +
-                          '100% { stroke-dashoffset: 280; opacity: 0.2; }' +
+                          '0% { stroke-dashoffset: 0; filter: drop-shadow(0 0 4px #38bdf8); }' +
+                          '50% { filter: drop-shadow(0 0 8px #a855f7); }' +
+                          '100% { stroke-dashoffset: 280; filter: drop-shadow(0 0 4px #ef4444); }' +
+                          '}' +
+                          '@keyframes ladderWaveMotion {' +
+                          '0% { transform: translateY(0px) scaleY(0.9); }' +
+                          '50% { transform: translateY(-3px) scaleY(1.2); }' +
+                          '100% { transform: translateY(0px) scaleY(0.9); }' +
                           '}' +
                           '@keyframes fastCandleShift {' +
                           '0% { transform: scaleY(0.92); }' +
@@ -125,32 +130,36 @@ def bot_script():
 
             function detectMarketAndPayout() {
                 var marketName = "EURUSD (OTC)";
-                var payout = "84%";
-                
-                var selectors = ['.asset-select__button', '.asset-name', '.chart-title', '.asset-select__short-name', '[class*="asset-select"]', '.deal-asset'];
-                for(var i=0; i<selectors.length; i++){
-                    var els = d.querySelectorAll(selectors[i]);
-                    for(var k=0; k<els.length; k++){
-                        var txt = els[k].innerText ? els[k].innerText.trim() : '';
-                        if(txt.length > 1 && txt.length < 35 && (txt.includes('/') || txt.includes('OTC') || txt.includes('USD') || txt.includes('EUR'))) {
-                            marketName = txt.replace(/\\n/g, ' ').replace(/\\s+/g, ' ');
+                var payout = "91%";
+
+                // Quotex specific live selectors extraction
+                var assetBtn = d.querySelector('.asset-select__button, .asset-name, .chart-title, .asset-select__short-name');
+                if(assetBtn && assetBtn.innerText) {
+                    var t = assetBtn.innerText.replace(/\\n/g, ' ').trim();
+                    if(t.length > 1 && t.length < 35) marketName = t;
+                } else {
+                    var allEls = d.querySelectorAll('span, div');
+                    for(var i=0; i<allEls.length; i++){
+                        var txt = allEls[i].innerText ? allEls[i].innerText.trim() : '';
+                        if((txt.includes('/') || txt.includes('OTC')) && txt.length < 25 && !txt.includes('%')) {
+                            marketName = txt;
                             break;
                         }
                     }
-                    if(marketName !== "EURUSD (OTC)") break;
                 }
 
-                var pSelectors = ['.asset-select__payout', '[class*="payout"]', '.deal-payout', 'span'];
-                for(var i=0; i<pSelectors.length; i++){
-                    var els = d.querySelectorAll(pSelectors[i]);
-                    for(var k=0; k<els.length; k++){
-                        var t = els[k].innerText ? els[k].innerText.trim() : '';
-                        if(t.includes('%') && t.length < 8) {
-                            payout = t;
+                var payoutEl = d.querySelector('.asset-select__payout, [class*="payout"]');
+                if(payoutEl && payoutEl.innerText.includes('%')) {
+                    payout = payoutEl.innerText.trim();
+                } else {
+                    var spans = d.querySelectorAll('span');
+                    for(var i=0; i<spans.length; i++){
+                        var st = spans[i].innerText ? spans[i].innerText.trim() : '';
+                        if(st.includes('%') && st.length < 6) {
+                            payout = st;
                             break;
                         }
                     }
-                    if(payout !== "84%") break;
                 }
 
                 return marketName + " " + payout;
@@ -275,7 +284,7 @@ def bot_script():
                         // Bottom Footer with Live Detected Market and Quotex Live Timezone
                         '<div style="display:flex;justify-content:space-between;align-items:center;font-size:7px;color:#94a3b8;border-top:1px solid rgba(255,255,255,0.06);padding-top:3px;">' +
                             '<span id="sniper-market-display" style="color:#38bdf8;font-weight:bold;">' + marketInfo + '</span>' +
-                            '<span id="sniper-live-timer" style="color:#22c55e;font-weight:900;background:rgba(34,197,94,0.12);padding:1px 3px;border-radius:2.5px;">15:20:03</span>' +
+                            '<span id="sniper-live-timer" style="color:#22c55e;font-weight:900;background:rgba(34,197,94,0.12);padding:1px 3px;border-radius:2.5px;">15:27:46</span>' +
                         '</div>' +
                     '</div>';
 
@@ -292,7 +301,7 @@ def bot_script():
                     if(floatingBtn) floatingBtn.style.display = 'flex';
                 };
 
-                // Live Quotex Clock / Timezone Loop
+                // Live Quotex Clock & Real-time Market Update Loop
                 setInterval(function(){
                     var tmEl = d.getElementById('sniper-live-timer');
                     if(tmEl) {
@@ -301,6 +310,10 @@ def bot_script():
                         var mins = String(now.getMinutes()).padStart(2, '0');
                         var secs = String(now.getSeconds()).padStart(2, '0');
                         tmEl.innerText = hrs + ':' + mins + ':' + secs;
+                    }
+                    var mktEl = d.getElementById('sniper-market-display');
+                    if(mktEl) {
+                        mktEl.innerText = detectMarketAndPayout();
                     }
                 }, 1000);
 
@@ -359,15 +372,15 @@ def bot_script():
                 statusBadge.style.color = '#38bdf8';
                 statusBadge.style.background = 'rgba(56,189,248,0.2)';
 
-                // Clear Edge-to-Edge Full Width Dual ECG Scanner
+                // Perfectly Positioned Clear Dual ECG Scanner with adjusted vertical spacing & small text
                 candleBox.innerHTML = 
-                    '<div style="position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;background:#05070d;border-radius:4px;overflow:hidden;padding:2px 0;">' +
-                        '<div style="position:absolute;top:1px;left:4px;font-size:6.5px;font-weight:900;color:#ef4444;letter-spacing:0.5px;z-index:2;">AI SIGNAL SCANNER</div>' +
-                        '<svg width="100%" height="22" viewBox="0 0 200 22" preserveAspectRatio="none" style="overflow:visible;margin-top:9px;">' +
-                            '<path d="M 0 11 L 20 11 L 28 2 L 36 20 L 44 4 L 52 18 L 60 11 L 100 11 L 110 3 L 118 19 L 126 6 L 134 16 L 142 11 L 200 11" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="280" style="animation:clearEcgLeftToRight 2.5s linear infinite;" />' +
+                    '<div style="position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;background:#05070d;border-radius:4px;overflow:hidden;padding:1px 0;">' +
+                        '<div style="position:absolute;top:1px;left:4px;font-size:5.5px;font-weight:900;color:#ef4444;letter-spacing:0.3px;z-index:2;">AI SCANNER</div>' +
+                        '<svg width="100%" height="20" viewBox="0 0 200 20" preserveAspectRatio="none" style="overflow:visible;margin-top:6px;">' +
+                            '<path d="M 0 10 L 20 10 L 28 1 L 36 19 L 44 3 L 52 17 L 60 10 L 100 10 L 110 2 L 118 18 L 126 5 L 134 15 L 142 10 L 200 10" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-dasharray="280" style="animation:clearEcgLeftToRight 2.8s linear infinite;" />' +
                         '</svg>' +
-                        '<svg width="100%" height="22" viewBox="0 0 200 22" preserveAspectRatio="none" style="overflow:visible;">' +
-                            '<path d="M 0 11 L 58 11 L 66 3 L 74 19 L 82 6 L 90 16 L 98 11 L 138 11 L 146 2 L 154 20 L 162 4 L 170 18 L 178 11 L 200 11" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="280" style="animation:clearEcgRightToLeft 2.5s linear infinite;" />' +
+                        '<svg width="100%" height="20" viewBox="0 0 200 20" preserveAspectRatio="none" style="overflow:visible;margin-bottom:2px;">' +
+                            '<path d="M 0 10 L 58 10 L 66 2 L 74 18 L 82 5 L 90 15 L 98 10 L 138 10 L 146 1 L 154 19 L 162 3 L 170 17 L 178 10 L 200 10" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-dasharray="280" style="animation:clearEcgRightToLeft 2.8s linear infinite;" />' +
                         '</svg>' +
                     '</div>';
 
@@ -385,7 +398,7 @@ def bot_script():
                 var stTimer = setInterval(function(){
                     sIdx++;
                     if(sIdx < scanTexts.length) signalText.innerText = scanTexts[sIdx];
-                }, 1200);
+                }, 1300);
 
                 fetch(renderServerUrl + '/signal?t=' + Date.now())
                 .then(function(r){ return r.json(); })
@@ -415,13 +428,13 @@ def bot_script():
 
                         executeTrade(isCall);
 
-                        // Wait for 5 seconds trade completion before starting next scanning cycle
+                        // Wait for 5 seconds trade completion before next cycle
                         if(autoLoopActive && currentMode === "5S") {
                             autoTimer = setTimeout(function(){
                                 if(autoLoopActive && currentMode === "5S") run5sAutoSequence(panel);
                             }, 5000);
                         }
-                    }, 5000);
+                    }, 5200);
                 });
             }
 
@@ -434,11 +447,17 @@ def bot_script():
                 statusBadge.style.color = '#facc15';
                 statusBadge.style.background = 'rgba(250,204,21,0.18)';
 
+                // Professional Ladder Wave / Up-Down Scanner for 1M Standard Mode
                 candleBox.innerHTML = 
-                    '<div style="position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#05070d;border-radius:4px;">' +
-                        '<div style="position:absolute;top:2px;left:5px;font-size:7px;font-weight:900;color:#facc15;letter-spacing:0.5px;">AI SIGNAL SCANNER</div>' +
-                        '<div style="width:34px;height:34px;border:3px dashed #facc15;border-top:3px solid #38bdf8;border-radius:50%;animation:sniperGlowPulse 1.2s infinite linear;box-shadow:0 0 12px #facc15;"></div>' +
-                        '<div style="position:absolute;font-size:8px;font-weight:900;color:#38bdf8;">⚡</div>' +
+                    '<div style="position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#05070d;border-radius:4px;overflow:hidden;">' +
+                        '<div style="display:flex;gap:4px;align-items:center;animation:ladderWaveMotion 1.2s infinite ease-in-out;">' +
+                            '<div style="width:4px;height:14px;background:#38bdf8;border-radius:2px;box-shadow:0 0 6px #38bdf8;"></div>' +
+                            '<div style="width:4px;height:24px;background:#22c55e;border-radius:2px;box-shadow:0 0 6px #22c55e;"></div>' +
+                            '<div style="width:4px;height:34px;background:#facc15;border-radius:2px;box-shadow:0 0 8px #facc15;"></div>' +
+                            '<div style="width:4px;height:22px;background:#ef4444;border-radius:2px;box-shadow:0 0 6px #ef4444;"></div>' +
+                            '<div style="width:4px;height:12px;background:#38bdf8;border-radius:2px;box-shadow:0 0 6px #38bdf8;"></div>' +
+                        '</div>' +
+                        '<div style="position:absolute;font-size:8px;font-weight:900;color:#fff;text-shadow:0 0 5px #000;">AI SIGNAL ANALYZER</div>' +
                     '</div>';
 
                 var scanSteps = [
