@@ -67,15 +67,15 @@ def bot_script():
                           '50% { box-shadow: 0 0 30px rgba(56,189,248,0.95), inset 0 0 18px rgba(56,189,248,0.6); border-color: #38bdf8; filter: hue-rotate(180deg); }' +
                           '100% { box-shadow: 0 0 16px rgba(34,197,94,0.6), inset 0 0 10px rgba(34,197,94,0.3); border-color: #22c55e; filter: hue-rotate(360deg); }' +
                           '}' +
-                          '@keyframes dualEcgLeftToRight {' +
-                          '0% { stroke-dashoffset: 250; opacity: 0.3; }' +
-                          '50% { opacity: 1; filter: drop-shadow(0 0 6px #ef4444); }' +
-                          '100% { stroke-dashoffset: 0; opacity: 0.9; }' +
+                          '@keyframes ecgLeftToRightSync {' +
+                          '0% { stroke-dashoffset: 300; filter: drop-shadow(0 0 5px #ef4444); }' +
+                          '50% { filter: drop-shadow(0 0 10px #facc15); }' +
+                          '100% { stroke-dashoffset: 0; filter: drop-shadow(0 0 5px #22c55e); }' +
                           '}' +
-                          '@keyframes dualEcgRightToLeft {' +
-                          '0% { stroke-dashoffset: 0; opacity: 0.9; }' +
-                          '50% { opacity: 1; filter: drop-shadow(0 0 6px #38bdf8); }' +
-                          '100% { stroke-dashoffset: 250; opacity: 0.3; }' +
+                          '@keyframes ecgRightToLeftSync {' +
+                          '0% { stroke-dashoffset: 0; filter: drop-shadow(0 0 5px #38bdf8); }' +
+                          '50% { filter: drop-shadow(0 0 10px #a855f7); }' +
+                          '100% { stroke-dashoffset: 300; filter: drop-shadow(0 0 5px #ef4444); }' +
                           '}' +
                           '@keyframes fastCandleShift {' +
                           '0% { transform: scaleY(0.92); }' +
@@ -125,7 +125,7 @@ def bot_script():
 
             function detectMarketAndPayout() {
                 var marketName = "EURUSD (OTC)";
-                var payout = "77%";
+                var payout = "82%";
                 
                 var selectors = ['.asset-select__button', '.asset-name', '.chart-title', '.asset-select__short-name', '[class*="asset-select"]', '.deal-asset'];
                 for(var i=0; i<selectors.length; i++){
@@ -150,7 +150,7 @@ def bot_script():
                             break;
                         }
                     }
-                    if(payout !== "77%") break;
+                    if(payout !== "82%") break;
                 }
 
                 return marketName + " " + payout;
@@ -158,7 +158,15 @@ def bot_script():
 
             function toggleSniperPanel() {
                 var existing = d.getElementById('sniper-bot-panel');
-                if(existing) { existing.remove(); return; }
+                var floatingBtn = d.getElementById('sniper-bot-btn');
+                
+                if(existing) { 
+                    existing.remove(); 
+                    if(floatingBtn) floatingBtn.style.display = 'flex';
+                    return; 
+                }
+
+                if(floatingBtn) floatingBtn.style.display = 'none';
 
                 var marketInfo = detectMarketAndPayout();
                 var panel = d.createElement('div');
@@ -173,7 +181,10 @@ def bot_script():
                                     '<img src="' + botMainLogo + '" style="width:16px;height:16px;border-radius:50%;object-fit:cover;border:1px solid #22c55e;" />' +
                                     '<div style="font-size:9.5px;font-weight:900;letter-spacing:0.5px;color:#fff;">SNIPER BOT</div>' +
                                 '</div>' +
-                                '<div id="sniper-close-btn" style="cursor:pointer;font-size:10px;color:#94a3b8;padding:1px 3px;border-radius:3px;background:rgba(255,255,255,0.06);">✕</div>' +
+                                '<div style="display:flex;gap:3px;align-items:center;">' +
+                                    '<div id="sniper-minimize-btn" style="cursor:pointer;font-size:10px;color:#94a3b8;padding:1px 4px;border-radius:3px;background:rgba(255,255,255,0.06);font-weight:bold;">—</div>' +
+                                    '<div id="sniper-close-btn" style="cursor:pointer;font-size:10px;color:#94a3b8;padding:1px 3px;border-radius:3px;background:rgba(255,255,255,0.06);">✕</div>' +
+                                '</div>' +
                             '</div>' +
                             '<div style="font-size:8.5px;font-weight:700;color:#94a3b8;margin-bottom:3px;">Password / Key:</div>' +
                             '<input id="sniper-license-input" type="text" placeholder="Key..." style="width:100%;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.15);border-radius:4px;padding:5px;color:#fff;font-size:8.5px;margin-bottom:5px;box-sizing:border-box;outline:none;" />' +
@@ -181,7 +192,14 @@ def bot_script():
                         '</div>';
 
                     d.body.appendChild(panel);
-                    d.getElementById('sniper-close-btn').onclick = function() { panel.remove(); };
+                    d.getElementById('sniper-close-btn').onclick = function() { 
+                        panel.remove(); 
+                        if(floatingBtn) floatingBtn.style.display = 'flex';
+                    };
+                    d.getElementById('sniper-minimize-btn').onclick = function() {
+                        panel.remove();
+                        if(floatingBtn) floatingBtn.style.display = 'flex';
+                    };
                     d.getElementById('sniper-verify-btn').onclick = function() {
                         var val = d.getElementById('sniper-license-input').value.trim();
                         if(val.length > 0) {
@@ -198,7 +216,7 @@ def bot_script():
                 panel.innerHTML = 
                     '<div style="padding:8px 7px;box-sizing:border-box;position:relative;display:flex;flex-direction:column;justify-content:space-between;">' +
                         '<div>' +
-                            // Header with Verified Badge
+                            // Header with Verified Badge & Minimize (-) Button
                             '<div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:4px;margin-bottom:5px;">' +
                                 '<div style="display:flex;align-items:center;gap:4px;">' +
                                     '<img src="' + botMainLogo + '" style="width:16px;height:16px;border-radius:50%;object-fit:cover;border:1px solid #22c55e;" />' +
@@ -211,6 +229,7 @@ def bot_script():
                                 '</div>' +
                                 '<div style="display:flex;align-items:center;gap:3px;">' +
                                     '<span style="background:rgba(34,197,94,0.18);color:#22c55e;font-size:6.5px;font-weight:900;padding:1px 3px;border-radius:3px;border:1px solid rgba(34,197,94,0.4);">VERIFIED</span>' +
+                                    '<div id="sniper-minimize-btn" style="cursor:pointer;font-size:10px;color:#94a3b8;padding:1px 4px;border-radius:3px;background:rgba(255,255,255,0.06);font-weight:bold;">—</div>' +
                                     '<div id="sniper-close-btn" style="cursor:pointer;font-size:10px;color:#94a3b8;padding:1px 3px;border-radius:3px;background:rgba(255,255,255,0.06);">✕</div>' +
                                 '</div>' +
                             '</div>' +
@@ -227,7 +246,7 @@ def bot_script():
                                 '<button id="stop-auto-btn" style="flex:1;background:#ef4444;color:#fff;border:none;border-radius:2px;padding:2px 3px;font-size:5.5px;font-weight:900;cursor:pointer;box-shadow:0 0 4px rgba(239,68,68,0.5);">Auto Stop</button>' +
                             '</div>' +
 
-                            // Next Candle Section with slightly faster dynamic candles
+                            // Next Candle Section
                             '<div style="text-align:center;margin-bottom:5px;">' +
                                 '<div style="font-size:8px;font-weight:700;color:#22c55e;margin-bottom:2px;letter-spacing:0.3px;">Next Candle??</div>' +
                                 '<div id="sniper-candle-display-box" style="display:flex;align-items:center;justify-content:space-evenly;height:52px;background:rgba(0,0,0,0.7);border-radius:5px;padding:4px 6px;border:1px solid rgba(56,189,248,0.45);box-shadow:inset 0 0 10px rgba(0,0,0,0.9);">' +
@@ -256,11 +275,22 @@ def bot_script():
                         // Bottom Footer with Live Detected Market and Quotex Live Timezone
                         '<div style="display:flex;justify-content:space-between;align-items:center;font-size:7px;color:#94a3b8;border-top:1px solid rgba(255,255,255,0.06);padding-top:3px;">' +
                             '<span id="sniper-market-display" style="color:#38bdf8;font-weight:bold;">' + marketInfo + '</span>' +
-                            '<span id="sniper-live-timer" style="color:#22c55e;font-weight:900;background:rgba(34,197,94,0.12);padding:1px 3px;border-radius:2.5px;">14:54:16</span>' +
+                            '<span id="sniper-live-timer" style="color:#22c55e;font-weight:900;background:rgba(34,197,94,0.12);padding:1px 3px;border-radius:2.5px;">15:03:44</span>' +
                         '</div>' +
                     '</div>';
 
                 d.body.appendChild(panel);
+
+                d.getElementById('sniper-close-btn').onclick = function() {
+                    stopAutoExecution();
+                    panel.remove();
+                    if(floatingBtn) floatingBtn.style.display = 'flex';
+                };
+
+                d.getElementById('sniper-minimize-btn').onclick = function() {
+                    panel.remove();
+                    if(floatingBtn) floatingBtn.style.display = 'flex';
+                };
 
                 // Live Quotex Clock / Timezone Loop
                 setInterval(function(){
@@ -314,11 +344,6 @@ def bot_script():
                     if(statusBadge) { statusBadge.innerText = 'READY'; statusBadge.style.color = '#22c55e'; statusBadge.style.background = 'rgba(34,197,94,0.18)'; }
                 }
 
-                d.getElementById('sniper-close-btn').onclick = function() {
-                    stopAutoExecution();
-                    panel.remove();
-                };
-
                 d.getElementById('sniper-get-signal-btn').onclick = function() {
                     if(currentMode === "5S") { run5sAutoSequence(panel); }
                     else { run1MinStandardSequence(panel); }
@@ -337,15 +362,15 @@ def bot_script():
                 statusBadge.style.color = '#38bdf8';
                 statusBadge.style.background = 'rgba(56,189,248,0.2)';
 
-                // Dual ECG Heartbeat Scanner (Top: Left-to-Right, Bottom: Right-to-Left)
+                // Dual ECG Full-Width Sync (Top: Left-to-Right touch border, Bottom: Right-to-Left touch border) with dynamic color shift
                 candleBox.innerHTML = 
                     '<div style="position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;background:#05070d;border-radius:4px;overflow:hidden;padding:2px 0;">' +
                         '<div style="position:absolute;top:1px;left:4px;font-size:6.5px;font-weight:900;color:#ef4444;letter-spacing:0.5px;z-index:2;">AI SIGNAL SCANNER</div>' +
-                        '<svg width="100%" height="22" viewBox="0 0 250 22" preserveAspectRatio="none" style="overflow:visible;margin-top:10px;">' +
-                            '<path d="M 0 11 L 30 11 L 38 2 L 46 20 L 58 6 L 66 16 L 74 11 L 120 11 L 130 3 L 142 19 L 154 8 L 164 16 L 172 11 L 250 11" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="250" style="animation:dualEcgLeftToRight 2.2s linear infinite;" />' +
+                        '<svg width="100%" height="22" viewBox="0 0 200 22" preserveAspectRatio="none" style="overflow:visible;margin-top:9px;">' +
+                            '<path d="M 0 11 L 24 11 L 30 2 L 38 20 L 46 5 L 54 17 L 62 11 L 100 11 L 108 3 L 116 19 L 124 7 L 132 16 L 140 11 L 200 11" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="200" style="animation:ecgLeftToRightSync 2.0s linear infinite;" />' +
                         '</svg>' +
-                        '<svg width="100%" height="22" viewBox="0 0 250 22" preserveAspectRatio="none" style="overflow:visible;">' +
-                            '<path d="M 0 11 L 78 11 L 86 2 L 94 20 L 106 6 L 114 16 L 122 11 L 176 11 L 186 3 L 198 19 L 210 8 L 220 16 L 228 11 L 250 11" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="250" style="animation:dualEcgRightToLeft 2.2s linear infinite;" />' +
+                        '<svg width="100%" height="22" viewBox="0 0 200 22" preserveAspectRatio="none" style="overflow:visible;">' +
+                            '<path d="M 0 11 L 60 11 L 68 2 L 76 20 L 84 5 L 92 17 L 100 11 L 138 11 L 146 3 L 154 19 L 162 7 L 170 16 L 178 11 L 200 11" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="200" style="animation:ecgRightToLeftSync 2.0s linear infinite;" />' +
                         '</svg>' +
                     '</div>';
 
