@@ -8,25 +8,20 @@ from datetime import datetime, timedelta
 
 app = Flask(__name__, static_folder=None)
 
-# লগিং কনফিগারেশন
 logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(name)s: %(message)s')
 logger = logging.getLogger("QX_UltraProMaxEngine")
 
-# এপিআই কনফিগারেশন ও সিক্রেট ক্রেডেন্সিয়ালস
 QX_API_KEY = os.environ.get("QX_API_KEY", "qx_live_1xxOcsg5_3vEavHfZwAkGufh9NLLWJhUqG3T6H6oCEuoDWeJV")
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "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")
 FINNHUB_API_KEY = os.environ.get("FINNHUB_API_KEY", "dbcaa19r01qqr3s0pf60dbcaa19r01qqr3s0pf6g")
 TWELVE_DATA_KEY = os.environ.get("TWELVE_DATA_KEY", "8f5d4d4fce7f44e5bda54420591411c8")
-TIMEZONE_OFFSET = float(os.environ.get("QX_TZ", "6"))  # UTC+6 বাংলাদেশ সময়
+TIMEZONE_OFFSET = float(os.environ.get("QX_TZ", "6"))
 
 http_session = requests.Session()
 if QX_API_KEY:
     http_session.headers["Authorization"] = f"Bearer {QX_API_KEY}"
 
 class AdvancedAccuracyFilters:
-    """
-    ৫৫০+ প্রাতিষ্ঠানিক লজিক রুলস, নিউজ গার্ড এবং উভয়মুখী (CALL/PUT) মোমেন্টাম ভ্যালিডেশন ফিল্টার।
-    """
     @staticmethod
     def check_news_safety(currency: str = "USD") -> bool:
         try:
@@ -50,9 +45,6 @@ class AdvancedAccuracyFilters:
 
 
 class GroqAIArbiter:
-    """
-    Groq LPU AI এর মাধ্যমে মিলি-সেকেন্ডে উভয়মুখী (CALL / PUT) সিগন্যাল যাচাইকরণ।
-    """
     @staticmethod
     def get_ai_decision(market_context: str) -> str:
         url = "https://api.groq.com/openai/v1/chat/completions"
@@ -561,7 +553,6 @@ def bot_script():
                 statusBadge.style.background = '#78350f';
                 statusBadge.style.border = '1px solid #f59e0b';
 
-                # আপনার দেওয়া নতুন স্ক্রিনশট অনুযায়ী ক্যান্ডেলগুলো আরও কাছাকাছি এবং কম ফাঁকা রেখে কম্প্যাক্ট ও স্মুথ করা হলো
                 candleBox.innerHTML = 
                     '<div style="position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0.85);border-radius:5px;padding:4px 6px;box-sizing:border-box;">' +
                         '<div style="font-size:6px;font-weight:900;color:#38bdf8;margin-bottom:2px;letter-spacing:0.5px;">AI SIGNAL ANALYZER</div>' +
