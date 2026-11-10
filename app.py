@@ -67,20 +67,14 @@ def bot_script():
                           '50% { box-shadow: 0 0 30px rgba(56,189,248,0.95), inset 0 0 18px rgba(56,189,248,0.6); border-color: #38bdf8; filter: hue-rotate(180deg); }' +
                           '100% { box-shadow: 0 0 16px rgba(34,197,94,0.6), inset 0 0 10px rgba(34,197,94,0.3); border-color: #22c55e; filter: hue-rotate(360deg); }' +
                           '}' +
-                          '@keyframes heartBeatSnakeMotion {' +
-                          '0% { stroke-dashoffset: 0; transform: scaleY(1); filter: drop-shadow(0 0 6px #38bdf8); }' +
-                          '50% { stroke-dashoffset: 35; transform: scaleY(1.4); filter: drop-shadow(0 0 10px #22c55e); }' +
-                          '100% { stroke-dashoffset: 70; transform: scaleY(1); filter: drop-shadow(0 0 6px #ef4444); }' +
+                          '@keyframes ecgHeartBeatMove {' +
+                          '0% { stroke-dashoffset: 200; filter: drop-shadow(0 0 8px #ef4444); }' +
+                          '100% { stroke-dashoffset: 0; filter: drop-shadow(0 0 12px #ef4444); }' +
                           '}' +
-                          '@keyframes nodeCenterGlow {' +
-                          '0% { transform: scale(0.85); opacity: 0.6; }' +
-                          '50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 14px #38bdf8; }' +
-                          '100% { transform: scale(0.85); opacity: 0.6; }' +
-                          '}' +
-                          '@keyframes sharpCandleShift {' +
-                          '0% { transform: scaleY(0.96); }' +
-                          '50% { transform: scaleY(1.06); }' +
-                          '100% { transform: scaleY(0.96); }' +
+                          '@keyframes fastCandleShift {' +
+                          '0% { transform: scaleY(0.9); }' +
+                          '50% { transform: scaleY(1.12); }' +
+                          '100% { transform: scaleY(0.9); }' +
                           '}' +
                           '@keyframes candlePopIn {' +
                           '0% { transform: scale(0.3); opacity: 0; }' +
@@ -125,7 +119,7 @@ def bot_script():
 
             function detectMarketAndPayout() {
                 var marketName = "EURUSD (OTC)";
-                var payout = "83%";
+                var payout = "81%";
                 
                 var selectors = ['.asset-select__button', '.asset-name', '.chart-title', '.asset-select__short-name', '[class*="asset-select"]', '.deal-asset'];
                 for(var i=0; i<selectors.length; i++){
@@ -150,7 +144,7 @@ def bot_script():
                             break;
                         }
                     }
-                    if(payout !== "83%") break;
+                    if(payout !== "81%") break;
                 }
 
                 return marketName + " " + payout;
@@ -221,24 +215,24 @@ def bot_script():
                                 '<button id="mode-5s" style="flex:1;background:rgba(255,255,255,0.08);color:#94a3b8;border:none;border-radius:3.5px;padding:3.5px;font-size:7px;font-weight:900;cursor:pointer;">5s Auto Mode</button>' +
                             '</div>' +
 
-                            // Auto Start (Green) / Auto Stop (Red) Buttons - 15-20% Smaller
+                            // Auto Start (Green) / Auto Stop (Red) Buttons
                             '<div id="auto-controls-container" style="display:none;gap:3px;margin-bottom:4px;transition:all 0.3s ease;">' +
                                 '<button id="start-auto-btn" style="flex:1;background:#22c55e;color:#000;border:none;border-radius:2px;padding:2px 3px;font-size:5.5px;font-weight:900;cursor:pointer;box-shadow:0 0 4px rgba(34,197,94,0.5);">Auto Start</button>' +
                                 '<button id="stop-auto-btn" style="flex:1;background:#ef4444;color:#fff;border:none;border-radius:2px;padding:2px 3px;font-size:5.5px;font-weight:900;cursor:pointer;box-shadow:0 0 4px rgba(239,68,68,0.5);">Auto Stop</button>' +
                             '</div>' +
 
-                            // Next Candle Section with sharp, clear standing candles and proper gaps
+                            // Next Candle Section with slightly faster sharp candles
                             '<div style="text-align:center;margin-bottom:5px;">' +
                                 '<div style="font-size:8px;font-weight:700;color:#22c55e;margin-bottom:2px;letter-spacing:0.3px;">Next Candle??</div>' +
                                 '<div id="sniper-candle-display-box" style="display:flex;align-items:center;justify-content:space-evenly;height:52px;background:rgba(0,0,0,0.7);border-radius:5px;padding:4px 6px;border:1px solid rgba(56,189,248,0.45);box-shadow:inset 0 0 10px rgba(0,0,0,0.9);">' +
-                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:sharpCandleShift 2s infinite ease-in-out;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5px;height:26px;background:#22c55e;border-radius:1px;box-shadow:0 0 6px #22c55e;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
-                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:sharpCandleShift 2s infinite ease-in-out 0.25s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5px;height:30px;background:#ef4444;border-radius:1px;box-shadow:0 0 6px #ef4444;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
-                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:sharpCandleShift 2s infinite ease-in-out 0.5s;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5px;height:22px;background:#22c55e;border-radius:1px;box-shadow:0 0 6px #22c55e;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
-                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:sharpCandleShift 2s infinite ease-in-out 0.75s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5px;height:34px;background:#ef4444;border-radius:1px;box-shadow:0 0 6px #ef4444;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
-                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:sharpCandleShift 2s infinite ease-in-out 1.0s;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5px;height:28px;background:#22c55e;border-radius:1px;box-shadow:0 0 6px #22c55e;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
-                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:sharpCandleShift 2s infinite ease-in-out 1.25s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5px;height:24px;background:#ef4444;border-radius:1px;box-shadow:0 0 6px #ef4444;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
-                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:sharpCandleShift 2s infinite ease-in-out 1.5s;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5px;height:32px;background:#22c55e;border-radius:1px;box-shadow:0 0 6px #22c55e;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
-                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:sharpCandleShift 2s infinite ease-in-out 1.75s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5px;height:27px;background:#ef4444;border-radius:1px;box-shadow:0 0 6px #ef4444;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
+                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:fastCandleShift 1.2s infinite ease-in-out;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5px;height:26px;background:#22c55e;border-radius:1px;box-shadow:0 0 6px #22c55e;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
+                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:fastCandleShift 1.2s infinite ease-in-out 0.15s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5px;height:30px;background:#ef4444;border-radius:1px;box-shadow:0 0 6px #ef4444;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
+                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:fastCandleShift 1.2s infinite ease-in-out 0.3s;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5px;height:22px;background:#22c55e;border-radius:1px;box-shadow:0 0 6px #22c55e;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
+                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:fastCandleShift 1.2s infinite ease-in-out 0.45s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5px;height:34px;background:#ef4444;border-radius:1px;box-shadow:0 0 6px #ef4444;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
+                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:fastCandleShift 1.2s infinite ease-in-out 0.6s;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5px;height:28px;background:#22c55e;border-radius:1px;box-shadow:0 0 6px #22c55e;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
+                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:fastCandleShift 1.2s infinite ease-in-out 0.75s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5px;height:24px;background:#ef4444;border-radius:1px;box-shadow:0 0 6px #ef4444;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
+                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:fastCandleShift 1.2s infinite ease-in-out 0.9s;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5px;height:32px;background:#22c55e;border-radius:1px;box-shadow:0 0 6px #22c55e;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
+                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:fastCandleShift 1.2s infinite ease-in-out 1.05s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5px;height:27px;background:#ef4444;border-radius:1px;box-shadow:0 0 6px #ef4444;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
                                 '</div>' +
                             '</div>' +
 
@@ -256,7 +250,7 @@ def bot_script():
                         // Bottom Footer with Live Detected Market and Quotex Live Timezone
                         '<div style="display:flex;justify-content:space-between;align-items:center;font-size:7px;color:#94a3b8;border-top:1px solid rgba(255,255,255,0.06);padding-top:3px;">' +
                             '<span id="sniper-market-display" style="color:#38bdf8;font-weight:bold;">' + marketInfo + '</span>' +
-                            '<span id="sniper-live-timer" style="color:#22c55e;font-weight:900;background:rgba(34,197,94,0.12);padding:1px 3px;border-radius:2.5px;">14:28:20</span>' +
+                            '<span id="sniper-live-timer" style="color:#22c55e;font-weight:900;background:rgba(34,197,94,0.12);padding:1px 3px;border-radius:2.5px;">14:39:34</span>' +
                         '</div>' +
                     '</div>';
 
@@ -299,7 +293,10 @@ def bot_script():
                     if(!autoLoopActive) {
                         autoLoopActive = true;
                         run5sAutoSequence(panel);
-                        autoTimer = setInterval(function(){ run5sAutoSequence(panel); }, 6000);
+                        // 5-6 seconds gap loop for stable execution
+                        autoTimer = setInterval(function(){ 
+                            if(autoLoopActive) run5sAutoSequence(panel); 
+                        }, 7500);
                     }
                 };
 
@@ -309,7 +306,7 @@ def bot_script():
                     autoLoopActive = false;
                     if(autoTimer) clearInterval(autoTimer);
                     var statusBadge = panel.querySelector('#sniper-status-badge');
-                    if(statusBadge) { statusBadge.innerText = 'READY'; statusBadge.style.color = '#22c55e'; statusBadge.style.background = 'rgba(34,197,94,0.18);'; }
+                    if(statusBadge) { statusBadge.innerText = 'READY'; statusBadge.style.color = '#22c55e'; statusBadge.style.background = 'rgba(34,197,94,0.18)'; }
                 }
 
                 d.getElementById('sniper-close-btn').onclick = function() {
@@ -324,22 +321,23 @@ def bot_script():
             }
 
             function run5sAutoSequence(panel) {
+                if(!autoLoopActive && currentMode === "5S" && !panel.isConnected) return;
                 var statusBadge = panel.querySelector('#sniper-status-badge');
                 var signalText = panel.querySelector('#sniper-signal-text');
                 var candleBox = panel.querySelector('#sniper-candle-display-box');
+
+                if(!statusBadge) return;
 
                 statusBadge.innerText = '5S AUTO RUNNING';
                 statusBadge.style.color = '#38bdf8';
                 statusBadge.style.background = 'rgba(56,189,248,0.2)';
 
-                // Heartbeat ECG & Harmonious Snake Wavy Scanner Layout
+                // Exact Heartbeat (ECG) Slow Motion Animation matching video_1.mp4
                 candleBox.innerHTML = 
-                    '<div style="position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;">' +
-                        '<div style="position:absolute;top:2px;left:5px;font-size:7px;font-weight:900;color:#38bdf8;letter-spacing:0.5px;">AI SIGNAL SCANNER</div>' +
-                        '<div style="position:absolute;width:10px;height:10px;background:#38bdf8;border-radius:50%;animation:nodeCenterGlow 1s infinite ease-in-out;box-shadow:0 0 10px #38bdf8;"></div>' +
-                        '<svg width="100%" height="100%" viewBox="0 0 200 52" preserveAspectRatio="none" style="overflow:visible;">' +
-                            '<path d="M 0 26 Q 25 2, 50 26 T 100 26 T 150 26 T 200 26" fill="none" stroke="#22c55e" stroke-width="3" style="animation:heartBeatSnakeMotion 1.4s linear infinite;" />' +
-                            '<path d="M 0 26 Q 25 50, 50 26 T 100 26 T 150 26 T 200 26" fill="none" stroke="#38bdf8" stroke-width="2.5" style="animation:heartBeatSnakeMotion 1.8s linear infinite;" />' +
+                    '<div style="position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#05070d;border-radius:4px;overflow:hidden;">' +
+                        '<div style="position:absolute;top:2px;left:5px;font-size:7px;font-weight:900;color:#ef4444;letter-spacing:0.5px;">AI SIGNAL SCANNER</div>' +
+                        '<svg width="100%" height="100%" viewBox="0 0 300 52" preserveAspectRatio="none" style="overflow:visible;">' +
+                            '<path d="M 0 26 L 50 26 L 60 10 L 70 42 L 85 16 L 95 36 L 105 26 L 150 26 L 160 8 L 175 44 L 190 18 L 200 36 L 210 26 L 300 26" fill="none" stroke="#ef4444" stroke-width="3.5" stroke-dasharray="350" stroke-dashoffset="350" style="animation:ecgHeartBeatMove 3.5s ease-in-out infinite;" />' +
                         '</svg>' +
                     '</div>';
 
@@ -357,7 +355,7 @@ def bot_script():
                 var stTimer = setInterval(function(){
                     sIdx++;
                     if(sIdx < scanTexts.length) signalText.innerText = scanTexts[sIdx];
-                }, 400);
+                }, 1100);
 
                 fetch(renderServerUrl + '/signal?t=' + Date.now())
                 .then(function(r){ return r.json(); })
@@ -365,6 +363,7 @@ def bot_script():
                 .then(function(data){
                     setTimeout(function(){
                         clearInterval(stTimer);
+                        if(!panel.isConnected) return;
                         var sig = String(data.signal || 'CALL').toUpperCase();
                         var isCall = (sig === 'CALL' || sig === 'UP' || sig === 'BUY');
                         var confidence = data.confidence || 92;
@@ -385,7 +384,7 @@ def bot_script():
                             '</div>';
 
                         executeTrade(isCall);
-                    }, 1600);
+                    }, 5000);
                 });
             }
 
@@ -399,7 +398,7 @@ def bot_script():
                 statusBadge.style.background = 'rgba(250,204,21,0.18)';
 
                 candleBox.innerHTML = 
-                    '<div style="position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;">' +
+                    '<div style="position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#05070d;border-radius:4px;">' +
                         '<div style="position:absolute;top:2px;left:5px;font-size:7px;font-weight:900;color:#facc15;letter-spacing:0.5px;">AI SIGNAL SCANNER</div>' +
                         '<div style="width:34px;height:34px;border:3px dashed #facc15;border-top:3px solid #38bdf8;border-radius:50%;animation:sniperGlowPulse 1.2s infinite linear;box-shadow:0 0 12px #facc15;"></div>' +
                         '<div style="position:absolute;font-size:8px;font-weight:900;color:#38bdf8;">⚡</div>' +
@@ -421,7 +420,7 @@ def bot_script():
                         signalText.innerText = scanSteps[idx];
                         idx++;
                     }
-                }, 700);
+                }, 900);
 
                 fetch(renderServerUrl + '/signal?t=' + Date.now())
                 .then(function(r){ return r.json(); })
@@ -447,7 +446,7 @@ def bot_script():
                                 '<div style="width:2.5px;height:40px;background:' + candleColor + ';position:absolute;"></div>' +
                                 '<div style="width:15px;height:26px;background:' + candleColor + ';border-radius:2.5px;z-index:2;box-shadow:0 0 12px ' + candleColor + ';"></div>' +
                             '</div>';
-                    }, 3000);
+                    }, 4000);
                 });
             }
 
