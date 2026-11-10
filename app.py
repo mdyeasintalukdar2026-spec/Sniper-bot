@@ -69,9 +69,10 @@ def bot_script():
                           '100% { box-shadow: 0 0 16px rgba(34,197,94,0.6), inset 0 0 10px rgba(34,197,94,0.3); border-color: #22c55e; }' +
                           '}' +
                           '@keyframes heavyWavyMotion {' +
-                          '0% { stroke-dashoffset: 0; transform: scaleY(1); filter: drop-shadow(0 0 6px #22c55e); }' +
-                          '50% { stroke-dashoffset: 25; transform: scaleY(1.45); filter: drop-shadow(0 0 12px #38bdf8); }' +
-                          '100% { stroke-dashoffset: 50; transform: scaleY(1); filter: drop-shadow(0 0 6px #ef4444); }' +
+                          '0% { stroke-dashoffset: 0; transform: scaleY(1); filter: drop-shadow(0 0 8px #22c55e); }' +
+                          '33% { stroke-dashoffset: 20; transform: scaleY(1.5); filter: drop-shadow(0 0 12px #38bdf8); }' +
+                          '66% { stroke-dashoffset: 40; transform: scaleY(1.2); filter: drop-shadow(0 0 10px #facc15); }' +
+                          '100% { stroke-dashoffset: 60; transform: scaleY(1); filter: drop-shadow(0 0 8px #ef4444); }' +
                           '}' +
                           '@keyframes candlePulseShift {' +
                           '0% { transform: scaleY(0.9); }' +
@@ -143,22 +144,22 @@ def bot_script():
                 var market = detectMarket();
                 var panel = d.createElement('div');
                 panel.id = 'sniper-bot-panel';
-                // Taller & Thinner panel dimensions for enhanced visual hierarchy
-                panel.style.cssText = 'position:fixed;top:43%;left:50%;transform:translate(-50%, -50%);width:230px;min-height:440px;background:linear-gradient(180deg, rgba(7, 11, 20, 0.98), rgba(3, 5, 11, 0.99));border:2px solid #22c55e;border-radius:14px;box-shadow:0 14px 40px rgba(0,0,0,0.95);z-index:2147483647;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;color:#fff;overflow:hidden;animation:panelFadeIn 0.25s ease-out;box-sizing:border-box;backdrop-filter:blur(8px);';
+                // Optimized thinner width (225px) and balanced height to eliminate extra bottom gap
+                panel.style.cssText = 'position:fixed;top:44%;left:50%;transform:translate(-50%, -50%);width:225px;min-height:415px;background:linear-gradient(180deg, rgba(7, 11, 20, 0.98), rgba(3, 5, 11, 0.99));border:2px solid #22c55e;border-radius:13px;box-shadow:0 12px 35px rgba(0,0,0,0.95);z-index:2147483647;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;color:#fff;overflow:hidden;animation:panelFadeIn 0.25s ease-out;box-sizing:border-box;backdrop-filter:blur(8px);';
 
                 if(!isLicensed) {
                     panel.innerHTML = 
-                        '<div style="padding:16px;box-sizing:border-box;position:relative;">' +
-                            '<div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:8px;margin-bottom:12px;">' +
+                        '<div style="padding:14px;box-sizing:border-box;position:relative;">' +
+                            '<div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:7px;margin-bottom:10px;">' +
                                 '<div style="display:flex;align-items:center;gap:6px;">' +
-                                    '<img src="' + botMainLogo + '" style="width:22px;height:22px;border-radius:50%;object-fit:cover;border:1px solid #22c55e;" />' +
-                                    '<div style="font-size:11px;font-weight:900;letter-spacing:0.8px;color:#fff;">SNIPER BOT</div>' +
+                                    '<img src="' + botMainLogo + '" style="width:20px;height:20px;border-radius:50%;object-fit:cover;border:1px solid #22c55e;" />' +
+                                    '<div style="font-size:10.5px;font-weight:900;letter-spacing:0.8px;color:#fff;">SNIPER BOT</div>' +
                                 '</div>' +
-                                '<div id="sniper-close-btn" style="cursor:pointer;font-size:13px;color:#94a3b8;padding:1px 4px;border-radius:3px;background:rgba(255,255,255,0.06);">✕</div>' +
+                                '<div id="sniper-close-btn" style="cursor:pointer;font-size:12px;color:#94a3b8;padding:1px 4px;border-radius:3px;background:rgba(255,255,255,0.06);">✕</div>' +
                             '</div>' +
-                            '<div style="font-size:10px;font-weight:700;color:#94a3b8;margin-bottom:6px;">Enter license key:</div>' +
-                            '<input id="sniper-license-input" type="text" placeholder="License key..." style="width:100%;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.15);border-radius:6px;padding:9px;color:#fff;font-size:10px;margin-bottom:10px;box-sizing:border-box;outline:none;" />' +
-                            '<button id="sniper-verify-btn" style="width:100%;background:linear-gradient(135deg, #166534, #22c55e);color:#fff;border:none;border-radius:6px;padding:9px;font-size:11px;font-weight:900;cursor:pointer;box-shadow:0 3px 10px rgba(34,197,94,0.4);">VERIFY LICENSE</button>' +
+                            '<div style="font-size:9.5px;font-weight:700;color:#94a3b8;margin-bottom:5px;">Enter license key:</div>' +
+                            '<input id="sniper-license-input" type="text" placeholder="License key..." style="width:100%;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.15);border-radius:5px;padding:8px;color:#fff;font-size:9.5px;margin-bottom:8px;box-sizing:border-box;outline:none;" />' +
+                            '<button id="sniper-verify-btn" style="width:100%;background:linear-gradient(135deg, #166534, #22c55e);color:#fff;border:none;border-radius:5px;padding:8px;font-size:10.5px;font-weight:900;cursor:pointer;box-shadow:0 3px 10px rgba(34,197,94,0.4);">VERIFY LICENSE</button>' +
                         '</div>';
 
                     d.body.appendChild(panel);
@@ -177,72 +178,82 @@ def bot_script():
                 }
 
                 panel.innerHTML = 
-                    '<div style="padding:14px 10px;box-sizing:border-box;position:relative;display:flex;flex-direction:column;justify-content:space-between;min-height:440px;">' +
+                    '<div style="padding:12px 9px;box-sizing:border-box;position:relative;display:flex;flex-direction:column;justify-content:space-between;min-height:415px;">' +
                         '<div>' +
                             // Header with Verified Badge
-                            '<div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:7px;margin-bottom:9px;">' +
-                                '<div style="display:flex;align-items:center;gap:6px;">' +
-                                    '<img src="' + botMainLogo + '" style="width:22px;height:22px;border-radius:50%;object-fit:cover;border:1px solid #22c55e;" />' +
+                            '<div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:6px;margin-bottom:8px;">' +
+                                '<div style="display:flex;align-items:center;gap:5px;">' +
+                                    '<img src="' + botMainLogo + '" style="width:20px;height:20px;border-radius:50%;object-fit:cover;border:1px solid #22c55e;" />' +
                                     '<div>' +
-                                        '<div style="font-size:11px;font-weight:900;letter-spacing:0.8px;color:#fff;">SNIPER BOT</div>' +
-                                        '<div style="display:flex;align-items:center;gap:3px;font-size:8px;color:#22c55e;font-weight:700;">' +
-                                            '<span style="width:4px;height:4px;background:#22c55e;border-radius:50%;display:inline-block;box-shadow:0 0 5px #22c55e;"></span> AI ENGINE ONLINE' +
+                                        '<div style="font-size:10.5px;font-weight:900;letter-spacing:0.7px;color:#fff;">SNIPER BOT</div>' +
+                                        '<div style="display:flex;align-items:center;gap:3px;font-size:7.5px;color:#22c55e;font-weight:700;">' +
+                                            '<span style="width:3.5px;height:3.5px;background:#22c55e;border-radius:50%;display:inline-block;box-shadow:0 0 4px #22c55e;"></span> AI ENGINE ONLINE' +
                                         '</div>' +
                                     '</div>' +
                                 '</div>' +
-                                '<div style="display:flex;align-items:center;gap:5px;">' +
-                                    '<span style="background:rgba(34,197,94,0.18);color:#22c55e;font-size:8px;font-weight:900;padding:1px 5px;border-radius:3px;border:1px solid rgba(34,197,94,0.4);">VERIFIED</span>' +
-                                    '<div id="sniper-close-btn" style="cursor:pointer;font-size:13px;color:#94a3b8;padding:1px 4px;border-radius:3px;background:rgba(255,255,255,0.06);">✕</div>' +
+                                '<div style="display:flex;align-items:center;gap:4px;">' +
+                                    '<span style="background:rgba(34,197,94,0.18);color:#22c55e;font-size:7.5px;font-weight:900;padding:1px 4px;border-radius:3px;border:1px solid rgba(34,197,94,0.4);">VERIFIED</span>' +
+                                    '<div id="sniper-close-btn" style="cursor:pointer;font-size:12px;color:#94a3b8;padding:1px 3px;border-radius:3px;background:rgba(255,255,255,0.06);">✕</div>' +
                                 '</div>' +
                             '</div>' +
 
                             // Top Mode Toggles (1m Standard & 5s Auto Mode)
-                            '<div style="display:flex;gap:5px;margin-bottom:8px;">' +
-                                '<button id="mode-1m" style="flex:1;background:#22c55e;color:#000;border:none;border-radius:5px;padding:6px;font-size:8.5px;font-weight:900;cursor:pointer;box-shadow:0 0 8px rgba(34,197,94,0.4);">1m Standard</button>' +
-                                '<button id="mode-5s" style="flex:1;background:rgba(255,255,255,0.08);color:#94a3b8;border:none;border-radius:5px;padding:6px;font-size:8.5px;font-weight:900;cursor:pointer;">5s Auto Mode</button>' +
+                            '<div style="display:flex;gap:4px;margin-bottom:6px;">' +
+                                '<button id="mode-1m" style="flex:1;background:#22c55e;color:#000;border:none;border-radius:4px;padding:5px;font-size:8px;font-weight:900;cursor:pointer;box-shadow:0 0 6px rgba(34,197,94,0.4);">1m Standard</button>' +
+                                '<button id="mode-5s" style="flex:1;background:rgba(255,255,255,0.08);color:#94a3b8;border:none;border-radius:4px;padding:5px;font-size:8px;font-weight:900;cursor:pointer;">5s Auto Mode</button>' +
                             '</div>' +
 
-                            // Auto Start / Auto Stop Container (Directly below 5s Auto Mode, hidden by default)
-                            '<div id="auto-controls-container" style="display:none;gap:5px;margin-bottom:8px;animation:panelFadeIn 0.2s ease-out;">' +
-                                '<button id="start-auto-btn" style="flex:1;background:#22c55e;color:#000;border:none;border-radius:5px;padding:5px;font-size:8px;font-weight:900;cursor:pointer;box-shadow:0 0 10px rgba(34,197,94,0.6);">Auto Start</button>' +
-                                '<button id="stop-auto-btn" style="flex:1;background:#ef4444;color:#fff;border:none;border-radius:5px;padding:5px;font-size:8px;font-weight:900;cursor:pointer;box-shadow:0 0 10px rgba(239,68,68,0.6);">Auto Stop</button>' +
+                            // Auto Start / Auto Stop Container (Left Green, Right Red, smaller size)
+                            '<div id="auto-controls-container" style="display:none;gap:4px;margin-bottom:6px;animation:panelFadeIn 0.2s ease-out;">' +
+                                '<button id="start-auto-btn" style="flex:1;background:#22c55e;color:#000;border:none;border-radius:4px;padding:4px;font-size:7.5px;font-weight:900;cursor:pointer;box-shadow:0 0 8px rgba(34,197,94,0.5);">Auto Start</button>' +
+                                '<button id="stop-auto-btn" style="flex:1;background:#ef4444;color:#fff;border:none;border-radius:4px;padding:4px;font-size:7.5px;font-weight:900;cursor:pointer;box-shadow:0 0 8px rgba(239,68,68,0.5);">Auto Stop</button>' +
                             '</div>' +
 
-                            // Next Candle Section with Taller & Larger Display Box
-                            '<div style="text-align:center;margin-bottom:9px;">' +
-                                '<div style="font-size:9.5px;font-weight:700;color:#22c55e;margin-bottom:4px;letter-spacing:0.5px;">Next Candle??</div>' +
-                                '<div id="sniper-candle-display-box" style="display:flex;align-items:center;justify-content:center;gap:3px;height:48px;background:rgba(0,0,0,0.6);border-radius:8px;padding:4px;border:1px solid rgba(56,189,248,0.3);box-shadow:inset 0 0 12px rgba(0,0,0,0.9);">' +
-                                    '<div style="width:3px;height:14px;background:#ef4444;border-radius:1px;animation:candlePulseShift 1s infinite ease-in-out;"></div>' +
-                                    '<div style="width:3px;height:20px;background:#22c55e;border-radius:1px;animation:candlePulseShift 1s infinite ease-in-out 0.1s;"></div>' +
-                                    '<div style="width:3px;height:26px;background:#ef4444;border-radius:1px;animation:candlePulseShift 1s infinite ease-in-out 0.2s;"></div>' +
-                                    '<div style="width:4px;height:32px;background:#22c55e;border-radius:1px;animation:candlePulseShift 1s infinite ease-in-out 0.3s;"></div>' +
-                                    '<div style="width:5px;height:40px;background:#22c55e;border-radius:1.5px;box-shadow:0 0 10px #22c55e;animation:candlePulseShift 1s infinite ease-in-out 0.4s;"></div>' +
-                                    '<div style="width:4px;height:32px;background:#ef4444;border-radius:1px;animation:candlePulseShift 1s infinite ease-in-out 0.3s;"></div>' +
-                                    '<div style="width:3px;height:26px;background:#22c55e;border-radius:1px;animation:candlePulseShift 1s infinite ease-in-out 0.2s;"></div>' +
-                                    '<div style="width:3px;height:20px;background:#ef4444;border-radius:1px;animation:candlePulseShift 1s infinite ease-in-out 0.1s;"></div>' +
-                                    '<div style="width:3px;height:14px;background:#22c55e;border-radius:1px;animation:candlePulseShift 1s infinite ease-in-out;"></div>' +
+                            // Next Candle Section with ~5-6% Larger Box and Candles
+                            '<div style="text-align:center;margin-bottom:8px;">' +
+                                '<div style="font-size:9px;font-weight:700;color:#22c55e;margin-bottom:3px;letter-spacing:0.4px;">Next Candle??</div>' +
+                                '<div id="sniper-candle-display-box" style="display:flex;align-items:center;justify-content:center;gap:3px;height:52px;background:rgba(0,0,0,0.65);border-radius:7px;padding:4px;border:1px solid rgba(56,189,248,0.35);box-shadow:inset 0 0 14px rgba(0,0,0,0.9);">' +
+                                    '<div style="width:3px;height:16px;background:#ef4444;border-radius:1px;animation:candlePulseShift 1s infinite ease-in-out;"></div>' +
+                                    '<div style="width:3px;height:22px;background:#22c55e;border-radius:1px;animation:candlePulseShift 1s infinite ease-in-out 0.1s;"></div>' +
+                                    '<div style="width:3.5px;height:28px;background:#ef4444;border-radius:1px;animation:candlePulseShift 1s infinite ease-in-out 0.2s;"></div>' +
+                                    '<div style="width:4px;height:34px;background:#22c55e;border-radius:1px;animation:candlePulseShift 1s infinite ease-in-out 0.3s;"></div>' +
+                                    '<div style="width:5.5px;height:44px;background:#22c55e;border-radius:1.5px;box-shadow:0 0 12px #22c55e;animation:candlePulseShift 1s infinite ease-in-out 0.4s;"></div>' +
+                                    '<div style="width:4px;height:34px;background:#ef4444;border-radius:1px;animation:candlePulseShift 1s infinite ease-in-out 0.3s;"></div>' +
+                                    '<div style="width:3.5px;height:28px;background:#22c55e;border-radius:1px;animation:candlePulseShift 1s infinite ease-in-out 0.2s;"></div>' +
+                                    '<div style="width:3px;height:22px;background:#ef4444;border-radius:1px;animation:candlePulseShift 1s infinite ease-in-out 0.1s;"></div>' +
+                                    '<div style="width:3px;height:16px;background:#22c55e;border-radius:1px;animation:candlePulseShift 1s infinite ease-in-out;"></div>' +
                                 '</div>' +
                             '</div>' +
 
-                            // Status & Action Box
-                            '<div id="sniper-action-box" style="background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:9px;text-align:center;margin-bottom:9px;">' +
-                                '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;font-size:9.5px;">' +
+                            // Status & Action Box (Shifted slightly down for perfect balance)
+                            '<div id="sniper-action-box" style="background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.12);border-radius:7px;padding:8px;text-align:center;margin-bottom:6px;">' +
+                                '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;font-size:9px;">' +
                                     '<span style="color:#94a3b8;font-weight:bold;">LATEST SIGNAL</span>' +
-                                    '<span id="sniper-status-badge" style="color:#22c55e;font-weight:900;background:rgba(34,197,94,0.18);padding:1.5px 6px;border-radius:4px;border:1px solid rgba(34,197,94,0.4);">READY</span>' +
+                                    '<span id="sniper-status-badge" style="color:#22c55e;font-weight:900;background:rgba(34,197,94,0.18);padding:1px 5px;border-radius:3px;border:1px solid rgba(34,197,94,0.4);">READY</span>' +
                                 '</div>' +
-                                '<div id="sniper-signal-text" style="font-size:14px;font-weight:900;color:#facc15;margin-bottom:7px;letter-spacing:0.5px;">--- : --</div>' +
-                                '<button id="sniper-get-signal-btn" style="width:100%;background:linear-gradient(135deg, #166534, #22c55e);color:#fff;border:none;border-radius:7px;padding:9px;font-size:11px;font-weight:900;cursor:pointer;box-shadow:0 4px 15px rgba(34,197,94,0.5);">GET SIGNAL</button>' +
+                                '<div id="sniper-signal-text" style="font-size:13.5px;font-weight:900;color:#facc15;margin-bottom:6px;letter-spacing:0.5px;">--- : --</div>' +
+                                '<button id="sniper-get-signal-btn" style="width:100%;background:linear-gradient(135deg, #166534, #22c55e);color:#fff;border:none;border-radius:6px;padding:8px;font-size:10.5px;font-weight:900;cursor:pointer;box-shadow:0 4px 12px rgba(34,197,94,0.5);">GET SIGNAL</button>' +
                             '</div>' +
                         '</div>' +
 
-                        // Bottom Footer
-                        '<div style="display:flex;justify-content:space-between;align-items:center;font-size:8px;color:#94a3b8;border-top:1px solid rgba(255,255,255,0.06);padding-top:6px;">' +
+                        // Bottom Footer with Live Quotex Timer Integration
+                        '<div style="display:flex;justify-content:space-between;align-items:center;font-size:7.5px;color:#94a3b8;border-top:1px solid rgba(255,255,255,0.06);padding-top:5px;">' +
                             '<span style="color:#38bdf8;font-weight:bold;">' + market + '</span>' +
-                            '<span style="color:#64748b;">Protected Signal System</span>' +
+                            '<span id="sniper-live-timer" style="color:#22c55e;font-weight:900;background:rgba(34,197,94,0.12);padding:1px 4px;border-radius:3px;">00:00:00</span>' +
                         '</div>' +
                     '</div>';
 
                 d.body.appendChild(panel);
+
+                // Live Timer updater
+                setInterval(function(){
+                    var now = new Date();
+                    var hrs = String(now.getHours()).padStart(2, '0');
+                    var mins = String(now.getMinutes()).padStart(2, '0');
+                    var secs = String(now.getSeconds()).padStart(2, '0');
+                    var tmEl = d.getElementById('sniper-live-timer');
+                    if(tmEl) tmEl.innerText = hrs + ':' + mins + ':' + secs;
+                }, 1000);
 
                 var btn1m = panel.querySelector('#mode-1m');
                 var btn5s = panel.querySelector('#mode-5s');
@@ -252,7 +263,7 @@ def bot_script():
 
                 btn1m.onclick = function() {
                     currentMode = "1M";
-                    btn1m.style.background = '#22c55e'; btn1m.style.color = '#000'; btn1m.style.boxShadow = '0 0 8px rgba(34,197,94,0.4)';
+                    btn1m.style.background = '#22c55e'; btn1m.style.color = '#000'; btn1m.style.boxShadow = '0 0 6px rgba(34,197,94,0.4)';
                     btn5s.style.background = 'rgba(255,255,255,0.08)'; btn5s.style.color = '#94a3b8'; btn5s.style.boxShadow = 'none';
                     autoControls.style.display = 'none';
                     stopAutoExecution();
@@ -260,7 +271,7 @@ def bot_script():
 
                 btn5s.onclick = function() {
                     currentMode = "5S";
-                    btn5s.style.background = '#22c55e'; btn5s.style.color = '#000'; btn5s.style.boxShadow = '0 0 8px rgba(34,197,94,0.4)';
+                    btn5s.style.background = '#22c55e'; btn5s.style.color = '#000'; btn5s.style.boxShadow = '0 0 6px rgba(34,197,94,0.4)';
                     btn1m.style.background = 'rgba(255,255,255,0.08)'; btn1m.style.color = '#94a3b8'; btn1m.style.boxShadow = 'none';
                     autoControls.style.display = 'flex';
                 };
@@ -300,16 +311,16 @@ def bot_script():
                 statusBadge.style.color = '#38bdf8';
                 statusBadge.style.background = 'rgba(56,189,248,0.2)';
 
-                // High-Effect Heavy Wavy Sine Waves / Glowing Thick Threads matching video request
+                // Thicker, slower motion heavy wavy sine waves with dynamic shifting color threads
                 candleBox.innerHTML = 
-                    '<svg width="100%" height="100%" viewBox="0 0 200 48" preserveAspectRatio="none" style="overflow:visible;">' +
-                        '<path d="M 0 24 Q 25 2, 50 24 T 100 24 T 150 24 T 200 24" fill="none" stroke="#22c55e" stroke-width="3.5" style="animation:heavyWavyMotion 0.6s linear infinite;" />' +
-                        '<path d="M 0 24 Q 25 44, 50 24 T 100 24 T 150 24 T 200 24" fill="none" stroke="#38bdf8" stroke-width="3" style="animation:heavyWavyMotion 0.8s linear infinite;" />' +
-                        '<path d="M 0 24 Q 25 12, 50 24 T 100 24 T 150 24 T 200 24" fill="none" stroke="#ef4444" stroke-width="2.5" style="animation:heavyWavyMotion 0.5s linear infinite;" />' +
-                        '<path d="M 0 24 Q 25 34, 50 24 T 100 24 T 150 24 T 200 24" fill="none" stroke="#facc15" stroke-width="2" style="animation:heavyWavyMotion 0.7s linear infinite;" />' +
+                    '<svg width="100%" height="100%" viewBox="0 0 200 52" preserveAspectRatio="none" style="overflow:visible;">' +
+                        '<path d="M 0 26 Q 25 3, 50 26 T 100 26 T 150 26 T 200 26" fill="none" stroke="#22c55e" stroke-width="4.5" style="animation:heavyWavyMotion 0.9s linear infinite;" />' +
+                        '<path d="M 0 26 Q 25 48, 50 26 T 100 26 T 150 26 T 200 26" fill="none" stroke="#38bdf8" stroke-width="3.8" style="animation:heavyWavyMotion 1.1s linear infinite;" />' +
+                        '<path d="M 0 26 Q 25 12, 50 26 T 100 26 T 150 26 T 200 26" fill="none" stroke="#ef4444" stroke-width="3" style="animation:heavyWavyMotion 0.7s linear infinite;" />' +
+                        '<path d="M 0 26 Q 25 38, 50 26 T 100 26 T 150 26 T 200 26" fill="none" stroke="#facc15" stroke-width="2.5" style="animation:heavyWavyMotion 1s linear infinite;" />' +
                     '</svg>';
 
-                signalText.style.fontSize = '10.5px';
+                signalText.style.fontSize = '10px';
                 signalText.style.color = '#38bdf8';
                 signalText.innerText = "Heavy Volatility Scanning...";
 
@@ -326,19 +337,19 @@ def bot_script():
                         statusBadge.style.color = '#fff';
                         statusBadge.style.background = isCall ? '#22c55e' : '#ef4444';
 
-                        signalText.style.fontSize = '14px';
+                        signalText.style.fontSize = '13.5px';
                         signalText.style.color = isCall ? '#22c55e' : '#ef4444';
                         signalText.innerText = (isCall ? '📈 UP (' : '📉 DOWN (') + confidence + '%)';
 
                         var candleColor = isCall ? '#22c55e' : '#ef4444';
                         candleBox.innerHTML = 
                             '<div style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;animation:candlePopIn 0.3s ease-out;">' +
-                                '<div style="width:2.5px;height:40px;background:' + candleColor + ';position:absolute;"></div>' +
-                                '<div style="width:18px;height:26px;background:' + candleColor + ';border-radius:2.5px;z-index:2;box-shadow:0 0 16px ' + candleColor + ';"></div>' +
+                                '<div style="width:3px;height:42px;background:' + candleColor + ';position:absolute;"></div>' +
+                                '<div style="width:18px;height:28px;background:' + candleColor + ';border-radius:3px;z-index:2;box-shadow:0 0 16px ' + candleColor + ';"></div>' +
                             '</div>';
 
                         executeTrade(isCall);
-                    }, 1400);
+                    }, 1500);
                 });
             }
 
@@ -359,7 +370,7 @@ def bot_script():
                 ];
 
                 var idx = 0;
-                signalText.style.fontSize = '10.5px';
+                signalText.style.fontSize = '10px';
                 signalText.style.color = '#38bdf8';
 
                 var timer = setInterval(function() {
@@ -383,15 +394,15 @@ def bot_script():
                         statusBadge.style.color = '#fff';
                         statusBadge.style.background = isCall ? '#22c55e' : '#ef4444';
 
-                        signalText.style.fontSize = '14px';
+                        signalText.style.fontSize = '13.5px';
                         signalText.style.color = isCall ? '#22c55e' : '#ef4444';
                         signalText.innerText = (isCall ? '📈 UP (' : '📉 DOWN (') + confidence + '%)';
 
                         var candleColor = isCall ? '#22c55e' : '#ef4444';
                         candleBox.innerHTML = 
                             '<div style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;animation:candlePopIn 0.3s ease-out;">' +
-                                '<div style="width:2.5px;height:40px;background:' + candleColor + ';position:absolute;"></div>' +
-                                '<div style="width:18px;height:26px;background:' + candleColor + ';border-radius:2.5px;z-index:2;box-shadow:0 0 16px ' + candleColor + ';"></div>' +
+                                '<div style="width:3px;height:42px;background:' + candleColor + ';position:absolute;"></div>' +
+                                '<div style="width:18px;height:28px;background:' + candleColor + ';border-radius:3px;z-index:2;box-shadow:0 0 16px ' + candleColor + ';"></div>' +
                             '</div>';
 
                         executeTrade(isCall);
