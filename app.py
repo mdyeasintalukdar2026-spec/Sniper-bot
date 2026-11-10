@@ -67,15 +67,15 @@ def bot_script():
                           '50% { box-shadow: 0 0 30px rgba(56,189,248,0.95), inset 0 0 18px rgba(56,189,248,0.6); border-color: #38bdf8; filter: hue-rotate(180deg); }' +
                           '100% { box-shadow: 0 0 16px rgba(34,197,94,0.6), inset 0 0 10px rgba(34,197,94,0.3); border-color: #22c55e; filter: hue-rotate(360deg); }' +
                           '}' +
-                          '@keyframes ecgLeftToRightSync {' +
-                          '0% { stroke-dashoffset: 300; filter: drop-shadow(0 0 5px #ef4444); }' +
-                          '50% { filter: drop-shadow(0 0 10px #facc15); }' +
-                          '100% { stroke-dashoffset: 0; filter: drop-shadow(0 0 5px #22c55e); }' +
+                          '@keyframes clearEcgLeftToRight {' +
+                          '0% { stroke-dashoffset: 280; opacity: 0.2; }' +
+                          '30% { opacity: 1; filter: drop-shadow(0 0 8px #ef4444); }' +
+                          '100% { stroke-dashoffset: 0; opacity: 1; filter: drop-shadow(0 0 8px #22c55e); }' +
                           '}' +
-                          '@keyframes ecgRightToLeftSync {' +
-                          '0% { stroke-dashoffset: 0; filter: drop-shadow(0 0 5px #38bdf8); }' +
-                          '50% { filter: drop-shadow(0 0 10px #a855f7); }' +
-                          '100% { stroke-dashoffset: 300; filter: drop-shadow(0 0 5px #ef4444); }' +
+                          '@keyframes clearEcgRightToLeft {' +
+                          '0% { stroke-dashoffset: 0; opacity: 1; filter: drop-shadow(0 0 8px #38bdf8); }' +
+                          '70% { opacity: 1; filter: drop-shadow(0 0 8px #a855f7); }' +
+                          '100% { stroke-dashoffset: 280; opacity: 0.2; }' +
                           '}' +
                           '@keyframes fastCandleShift {' +
                           '0% { transform: scaleY(0.92); }' +
@@ -125,7 +125,7 @@ def bot_script():
 
             function detectMarketAndPayout() {
                 var marketName = "EURUSD (OTC)";
-                var payout = "82%";
+                var payout = "84%";
                 
                 var selectors = ['.asset-select__button', '.asset-name', '.chart-title', '.asset-select__short-name', '[class*="asset-select"]', '.deal-asset'];
                 for(var i=0; i<selectors.length; i++){
@@ -150,7 +150,7 @@ def bot_script():
                             break;
                         }
                     }
-                    if(payout !== "82%") break;
+                    if(payout !== "84%") break;
                 }
 
                 return marketName + " " + payout;
@@ -275,7 +275,7 @@ def bot_script():
                         // Bottom Footer with Live Detected Market and Quotex Live Timezone
                         '<div style="display:flex;justify-content:space-between;align-items:center;font-size:7px;color:#94a3b8;border-top:1px solid rgba(255,255,255,0.06);padding-top:3px;">' +
                             '<span id="sniper-market-display" style="color:#38bdf8;font-weight:bold;">' + marketInfo + '</span>' +
-                            '<span id="sniper-live-timer" style="color:#22c55e;font-weight:900;background:rgba(34,197,94,0.12);padding:1px 3px;border-radius:2.5px;">15:03:44</span>' +
+                            '<span id="sniper-live-timer" style="color:#22c55e;font-weight:900;background:rgba(34,197,94,0.12);padding:1px 3px;border-radius:2.5px;">15:20:03</span>' +
                         '</div>' +
                     '</div>';
 
@@ -329,9 +329,6 @@ def bot_script():
                     if(!autoLoopActive) {
                         autoLoopActive = true;
                         run5sAutoSequence(panel);
-                        autoTimer = setInterval(function(){ 
-                            if(autoLoopActive) run5sAutoSequence(panel); 
-                        }, 9000);
                     }
                 };
 
@@ -339,7 +336,7 @@ def bot_script():
 
                 function stopAutoExecution() {
                     autoLoopActive = false;
-                    if(autoTimer) clearInterval(autoTimer);
+                    if(autoTimer) clearTimeout(autoTimer);
                     var statusBadge = panel.querySelector('#sniper-status-badge');
                     if(statusBadge) { statusBadge.innerText = 'READY'; statusBadge.style.color = '#22c55e'; statusBadge.style.background = 'rgba(34,197,94,0.18)'; }
                 }
@@ -362,15 +359,15 @@ def bot_script():
                 statusBadge.style.color = '#38bdf8';
                 statusBadge.style.background = 'rgba(56,189,248,0.2)';
 
-                // Dual ECG Full-Width Sync (Top: Left-to-Right touch border, Bottom: Right-to-Left touch border) with dynamic color shift
+                // Clear Edge-to-Edge Full Width Dual ECG Scanner
                 candleBox.innerHTML = 
                     '<div style="position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;background:#05070d;border-radius:4px;overflow:hidden;padding:2px 0;">' +
                         '<div style="position:absolute;top:1px;left:4px;font-size:6.5px;font-weight:900;color:#ef4444;letter-spacing:0.5px;z-index:2;">AI SIGNAL SCANNER</div>' +
                         '<svg width="100%" height="22" viewBox="0 0 200 22" preserveAspectRatio="none" style="overflow:visible;margin-top:9px;">' +
-                            '<path d="M 0 11 L 24 11 L 30 2 L 38 20 L 46 5 L 54 17 L 62 11 L 100 11 L 108 3 L 116 19 L 124 7 L 132 16 L 140 11 L 200 11" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="200" style="animation:ecgLeftToRightSync 2.0s linear infinite;" />' +
+                            '<path d="M 0 11 L 20 11 L 28 2 L 36 20 L 44 4 L 52 18 L 60 11 L 100 11 L 110 3 L 118 19 L 126 6 L 134 16 L 142 11 L 200 11" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="280" style="animation:clearEcgLeftToRight 2.5s linear infinite;" />' +
                         '</svg>' +
                         '<svg width="100%" height="22" viewBox="0 0 200 22" preserveAspectRatio="none" style="overflow:visible;">' +
-                            '<path d="M 0 11 L 60 11 L 68 2 L 76 20 L 84 5 L 92 17 L 100 11 L 138 11 L 146 3 L 154 19 L 162 7 L 170 16 L 178 11 L 200 11" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="200" style="animation:ecgRightToLeftSync 2.0s linear infinite;" />' +
+                            '<path d="M 0 11 L 58 11 L 66 3 L 74 19 L 82 6 L 90 16 L 98 11 L 138 11 L 146 2 L 154 20 L 162 4 L 170 18 L 178 11 L 200 11" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="280" style="animation:clearEcgRightToLeft 2.5s linear infinite;" />' +
                         '</svg>' +
                     '</div>';
 
@@ -388,7 +385,7 @@ def bot_script():
                 var stTimer = setInterval(function(){
                     sIdx++;
                     if(sIdx < scanTexts.length) signalText.innerText = scanTexts[sIdx];
-                }, 1100);
+                }, 1200);
 
                 fetch(renderServerUrl + '/signal?t=' + Date.now())
                 .then(function(r){ return r.json(); })
@@ -417,7 +414,14 @@ def bot_script():
                             '</div>';
 
                         executeTrade(isCall);
-                    }, 4500);
+
+                        // Wait for 5 seconds trade completion before starting next scanning cycle
+                        if(autoLoopActive && currentMode === "5S") {
+                            autoTimer = setTimeout(function(){
+                                if(autoLoopActive && currentMode === "5S") run5sAutoSequence(panel);
+                            }, 5000);
+                        }
+                    }, 5000);
                 });
             }
 
@@ -534,4 +538,4 @@ def start_server():
     app.run(host='0.0.0.0', port=port)
 
 if __name__ == '__main__':
-    threading.Thread(target=run_server, daemon=True).start()
+    threading.Thread(target=start_server, daemon=True).start()
