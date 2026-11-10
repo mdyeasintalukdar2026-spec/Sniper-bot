@@ -63,10 +63,10 @@ class GroqAIArbiter:
         payload = {
             "model": "llama-3.3-70b-versatile",
             "messages": [
-                {"role": "system", "content": "You are a master binary options AI arbiter. Return strictly 'CALL' or 'PUT' based on real technical price action. Never generate single-direction signals consistently. Balance CALL and PUT dynamically."},
+                {"role": "system", "content": "You are a master binary options AI arbiter. Return strictly 'CALL' or 'PUT' based on real technical price action. Never generate single-direction signals consistently. Balance CALL and PUT dynamically according to real-time market action."},
                 {"role": "user", "content": f"Analyze market context: {market_context}. Output decision only ('CALL' or 'PUT')."}
             ],
-            "temperature": 0.4,
+            "temperature": 0.5,
             "max_tokens": 8
         }
         try:
@@ -78,12 +78,12 @@ class GroqAIArbiter:
         except Exception as e:
             logger.error(f"Groq AI Error: {e}")
         
-        return "CALL" if (int(time.time()) % 2 == 0) else "PUT"
+        return "CALL" if (int(time.time() * 7) % 2 == 0) else "PUT"
 
 
 @app.route('/')
 def home():
-    return "Quotex Ultra-Pro Max Engine Running with Bi-Directional Logic & Smooth Animations!"
+    return "Quotex Ultra-Pro Max Engine Running with Bi-Directional Logic & Ultra-Smooth Animations!"
 
 @app.route('/ping')
 def ping():
@@ -106,7 +106,7 @@ def get_signal():
             res.headers.add("Access-Control-Allow-Origin", "*")
             return res
 
-        trend_calc = (time_slot * 31337 + int(current_time)) % 100
+        trend_calc = (int(current_time * 1000) // 100) % 100
         base_signal = "CALL" if (trend_calc % 2 == 0) else "PUT"
         
         market_ctx = f"Asset: EURUSD_otc, TimeSlot: {time_slot}, Preliminary Trend: {base_signal}"
@@ -172,10 +172,10 @@ def bot_script():
                           '50% { opacity: 1; filter: drop-shadow(0 0 6px #a855f7); }' +
                           '100% { stroke-dashoffset: 280; opacity: 0.3; }' +
                           '}' +
-                          '@keyframes slowCandleUpDown {' +
-                          '0% { transform: scaleY(0.5); }' +
-                          '50% { transform: scaleY(1.35); }' +
-                          '100% { transform: scaleY(0.5); }' +
+                          '@keyframes ultraSmoothCandle {' +
+                          '0% { transform: scaleY(0.75); }' +
+                          '50% { transform: scaleY(1.15); }' +
+                          '100% { transform: scaleY(0.75); }' +
                           '}' +
                           '@keyframes candlePopIn {' +
                           '0% { transform: scale(0.3); opacity: 0; }' +
@@ -345,14 +345,14 @@ def bot_script():
                             '<div style="text-align:center;margin-bottom:5px;">' +
                                 '<div style="font-size:8px;font-weight:700;color:#22c55e;margin-bottom:2px;letter-spacing:0.3px;">Next Candle??</div>' +
                                 '<div id="sniper-candle-display-box" style="display:flex;align-items:center;justify-content:space-evenly;height:52px;background:rgba(0,0,0,0.7);border-radius:5px;padding:4px 6px;border:1px solid rgba(56,189,248,0.45);box-shadow:inset 0 0 10px rgba(0,0,0,0.9);">' +
-                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:slowCandleUpDown 2s infinite ease-in-out;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5px;height:26px;background:#22c55e;border-radius:1px;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
-                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:slowCandleUpDown 2s infinite ease-in-out 0.25s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5px;height:30px;background:#ef4444;border-radius:1px;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
-                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:slowCandleUpDown 2s infinite ease-in-out 0.5s;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5px;height:22px;background:#22c55e;border-radius:1px;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
-                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:slowCandleUpDown 2s infinite ease-in-out 0.75s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5px;height:34px;background:#ef4444;border-radius:1px;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
-                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:slowCandleUpDown 2s infinite ease-in-out 1s;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5px;height:28px;background:#22c55e;border-radius:1px;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
-                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:slowCandleUpDown 2s infinite ease-in-out 1.25s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5px;height:24px;background:#ef4444;border-radius:1px;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
-                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:slowCandleUpDown 2s infinite ease-in-out 1.5s;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5px;height:32px;background:#22c55e;border-radius:1px;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
-                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:slowCandleUpDown 2s infinite ease-in-out 1.75s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5px;height:27px;background:#ef4444;border-radius:1px;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
+                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:ultraSmoothCandle 2.6s infinite ease-in-out;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5px;height:26px;background:#22c55e;border-radius:1px;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
+                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:ultraSmoothCandle 2.6s infinite ease-in-out 0.3s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5px;height:30px;background:#ef4444;border-radius:1px;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
+                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:ultraSmoothCandle 2.6s infinite ease-in-out 0.6s;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5px;height:22px;background:#22c55e;border-radius:1px;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
+                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:ultraSmoothCandle 2.6s infinite ease-in-out 0.9s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5px;height:34px;background:#ef4444;border-radius:1px;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
+                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:ultraSmoothCandle 2.6s infinite ease-in-out 1.2s;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5px;height:28px;background:#22c55e;border-radius:1px;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
+                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:ultraSmoothCandle 2.6s infinite ease-in-out 1.5s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5px;height:24px;background:#ef4444;border-radius:1px;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
+                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:ultraSmoothCandle 2.6s infinite ease-in-out 1.8s;"><div style="width:1.5px;height:7px;background:#22c55e;"></div><div style="width:5px;height:32px;background:#22c55e;border-radius:1px;"></div><div style="width:1.5px;height:7px;background:#22c55e;"></div></div>' +
+                                    '<div style="display:flex;flex-direction:column;align-items:center;animation:ultraSmoothCandle 2.6s infinite ease-in-out 2.1s;"><div style="width:1.5px;height:7px;background:#ef4444;"></div><div style="width:5px;height:27px;background:#ef4444;border-radius:1px;"></div><div style="width:1.5px;height:7px;background:#ef4444;"></div></div>' +
                                 '</div>' +
                             '</div>' +
 
@@ -561,16 +561,17 @@ def bot_script():
                 statusBadge.style.background = '#78350f';
                 statusBadge.style.border = '1px solid #f59e0b';
 
+                # আপনার দেওয়া নতুন স্ক্রিনশট অনুযায়ী ক্যান্ডেলগুলো আরও কাছাকাছি এবং কম ফাঁকা রেখে কম্প্যাক্ট ও স্মুথ করা হলো
                 candleBox.innerHTML = 
                     '<div style="position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0.85);border-radius:5px;padding:4px 6px;box-sizing:border-box;">' +
                         '<div style="font-size:6px;font-weight:900;color:#38bdf8;margin-bottom:2px;letter-spacing:0.5px;">AI SIGNAL ANALYZER</div>' +
-                        '<div style="display:flex;align-items:center;justify-content:space-evenly;width:100%;height:30px;">' +
-                            '<div style="width:3.5px;height:12px;background:#22c55e;border-radius:2px;animation:slowCandleUpDown 0.7s infinite ease-in-out;"></div>' +
-                            '<div style="width:3.5px;height:22px;background:#38bdf8;border-radius:2px;animation:slowCandleUpDown 1.0s infinite ease-in-out 0.2s;"></div>' +
-                            '<div style="width:3.5px;height:28px;background:#a855f7;border-radius:2px;animation:slowCandleUpDown 0.8s infinite ease-in-out 0.4s;"></div>' +
-                            '<div style="width:3.5px;height:16px;background:#facc15;border-radius:2px;animation:slowCandleUpDown 1.2s infinite ease-in-out 0.1s;"></div>' +
-                            '<div style="width:3.5px;height:24px;background:#22c55e;border-radius:2px;animation:slowCandleUpDown 0.9s infinite ease-in-out 0.3s;"></div>' +
-                            '<div style="width:3.5px;height:14px;background:#ef4444;border-radius:2px;animation:slowCandleUpDown 0.6s infinite ease-in-out 0.5s;"></div>' +
+                        '<div style="display:flex;align-items:center;justify-content:center;gap:6px;width:100%;height:30px;">' +
+                            '<div style="width:3px;height:12px;background:#22c55e;border-radius:2px;animation:ultraSmoothCandle 0.8s infinite ease-in-out;"></div>' +
+                            '<div style="width:3px;height:22px;background:#ef4444;border-radius:2px;animation:ultraSmoothCandle 1.1s infinite ease-in-out 0.15s;"></div>' +
+                            '<div style="width:3px;height:26px;background:#38bdf8;border-radius:2px;animation:ultraSmoothCandle 0.9s infinite ease-in-out 0.3s;"></div>' +
+                            '<div style="width:3px;height:15px;background:#a855f7;border-radius:2px;animation:ultraSmoothCandle 1.2s infinite ease-in-out 0.1s;"></div>' +
+                            '<div style="width:3px;height:24px;background:#22c55e;border-radius:2px;animation:ultraSmoothCandle 1.0s infinite ease-in-out 0.25s;"></div>' +
+                            '<div style="width:3px;height:14px;background:#ef4444;border-radius:2px;animation:ultraSmoothCandle 0.7s infinite ease-in-out 0.4s;"></div>' +
                         '</div>' +
                     '</div>';
 
