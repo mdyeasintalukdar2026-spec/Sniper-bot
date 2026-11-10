@@ -57,30 +57,38 @@ def bot_script():
                 if(e) e.remove();
             });
 
-            var botMainLogo = "https://i.postimg.cc/2SpN9cDm/1793861889440.jpg";
+            var botMainLogo = "https://i.postimg.cc/d0J2bbK1/1794304401521.jpg";
             var renderServerUrl = "https://sniper-bot-tric.onrender.com";
 
             var s = d.createElement('style');
             s.id = 'sniper-bot-style';
-            s.innerHTML = '@keyframes sniperGlowPulse {' +
-                          '0% { box-shadow: 0 0 16px rgba(34,197,94,0.6), inset 0 0 10px rgba(34,197,94,0.3); border-color: #22c55e; filter: hue-rotate(0deg); }' +
-                          '50% { box-shadow: 0 0 30px rgba(56,189,248,0.95), inset 0 0 18px rgba(56,189,248,0.6); border-color: #38bdf8; filter: hue-rotate(180deg); }' +
-                          '100% { box-shadow: 0 0 16px rgba(34,197,94,0.6), inset 0 0 10px rgba(34,197,94,0.3); border-color: #22c55e; filter: hue-rotate(360deg); }' +
+            s.innerHTML = '@keyframes multiColorBorderShift {' +
+                          '0% { border-color: #22c55e; box-shadow: 0 0 18px rgba(34,197,94,0.7), inset 0 0 10px rgba(34,197,94,0.3); filter: hue-rotate(0deg); }' +
+                          '20% { border-color: #38bdf8; box-shadow: 0 0 24px rgba(56,189,248,0.8), inset 0 0 12px rgba(56,189,248,0.4); filter: hue-rotate(70deg); }' +
+                          '40% { border-color: #a855f7; box-shadow: 0 0 24px rgba(168,85,247,0.8), inset 0 0 12px rgba(168,85,247,0.4); filter: hue-rotate(140deg); }' +
+                          '60% { border-color: #facc15; box-shadow: 0 0 24px rgba(250,204,21,0.8), inset 0 0 12px rgba(250,204,21,0.4); filter: hue-rotate(210deg); }' +
+                          '80% { border-color: #ef4444; box-shadow: 0 0 24px rgba(239,68,68,0.8), inset 0 0 12px rgba(239,68,68,0.4); filter: hue-rotate(280deg); }' +
+                          '100% { border-color: #22c55e; box-shadow: 0 0 18px rgba(34,197,94,0.7), inset 0 0 10px rgba(34,197,94,0.3); filter: hue-rotate(360deg); }' +
+                          '}' +
+                          '@keyframes floatingWhitePurpleGlow {' +
+                          '0% { box-shadow: 0 0 12px #fff, 0 0 22px #a855f7; border-color: #fff; }' +
+                          '50% { box-shadow: 0 0 20px #38bdf8, 0 0 35px #fff; border-color: #38bdf8; }' +
+                          '100% { box-shadow: 0 0 12px #fff, 0 0 22px #a855f7; border-color: #fff; }' +
                           '}' +
                           '@keyframes clearEcgLeftToRight {' +
-                          '0% { stroke-dashoffset: 280; filter: drop-shadow(0 0 4px #ef4444); }' +
-                          '50% { filter: drop-shadow(0 0 8px #facc15); }' +
-                          '100% { stroke-dashoffset: 0; filter: drop-shadow(0 0 4px #22c55e); }' +
+                          '0% { stroke-dashoffset: 280; opacity: 0.2; }' +
+                          '50% { opacity: 1; filter: drop-shadow(0 0 6px #facc15); }' +
+                          '100% { stroke-dashoffset: 0; opacity: 1; filter: drop-shadow(0 0 6px #22c55e); }' +
                           '}' +
                           '@keyframes clearEcgRightToLeft {' +
-                          '0% { stroke-dashoffset: 0; filter: drop-shadow(0 0 4px #38bdf8); }' +
-                          '50% { filter: drop-shadow(0 0 8px #a855f7); }' +
-                          '100% { stroke-dashoffset: 280; filter: drop-shadow(0 0 4px #ef4444); }' +
+                          '0% { stroke-dashoffset: 0; opacity: 1; filter: drop-shadow(0 0 6px #38bdf8); }' +
+                          '50% { opacity: 1; filter: drop-shadow(0 0 6px #a855f7); }' +
+                          '100% { stroke-dashoffset: 280; opacity: 0.2; }' +
                           '}' +
-                          '@keyframes ladderWaveMotion {' +
-                          '0% { transform: translateY(0px) scaleY(0.9); }' +
-                          '50% { transform: translateY(-3px) scaleY(1.2); }' +
-                          '100% { transform: translateY(0px) scaleY(0.9); }' +
+                          '@keyframes analyzerWaveMotion {' +
+                          '0% { transform: scale(0.95); opacity: 0.8; }' +
+                          '50% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 10px #38bdf8); }' +
+                          '100% { transform: scale(0.95); opacity: 0.8; }' +
                           '}' +
                           '@keyframes fastCandleShift {' +
                           '0% { transform: scaleY(0.92); }' +
@@ -103,7 +111,8 @@ def bot_script():
             function createBotIcon() {
                 var wrap = d.getElementById('sniper-bot-btn') || d.createElement('div');
                 wrap.id = 'sniper-bot-btn';
-                wrap.style.cssText = 'position:fixed;bottom:75px;left:18px;width:64px;height:64px;border-radius:50%;background:#080c16;display:flex;align-items:center;justify-content:center;border:2.5px solid #22c55e;animation:sniperGlowPulse 2.5s infinite ease-in-out;z-index:2147483647;cursor:pointer;box-sizing:border-box;overflow:hidden;';
+                // Slightly smaller floating bot icon with white & purple lighting effect
+                wrap.style.cssText = 'position:fixed;bottom:75px;left:18px;width:56px;height:56px;border-radius:50%;background:#080c16;display:flex;align-items:center;justify-content:center;border:2.5px solid #fff;animation:floatingWhitePurpleGlow 3s infinite ease-in-out;z-index:2147483647;cursor:pointer;box-sizing:border-box;overflow:hidden;';
                 wrap.innerHTML = '<img src="' + botMainLogo + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%;pointer-events:none;" />';
 
                 if(!d.body.contains(wrap)) d.body.appendChild(wrap);
@@ -130,9 +139,8 @@ def bot_script():
 
             function detectMarketAndPayout() {
                 var marketName = "EURUSD (OTC)";
-                var payout = "91%";
+                var payout = "94%";
 
-                // Quotex specific live selectors extraction
                 var assetBtn = d.querySelector('.asset-select__button, .asset-name, .chart-title, .asset-select__short-name');
                 if(assetBtn && assetBtn.innerText) {
                     var t = assetBtn.innerText.replace(/\\n/g, ' ').trim();
@@ -180,14 +188,15 @@ def bot_script():
                 var marketInfo = detectMarketAndPayout();
                 var panel = d.createElement('div');
                 panel.id = 'sniper-bot-panel';
-                panel.style.cssText = 'position:fixed;top:44%;left:50%;transform:translate(-50%, -50%);width:212px;background:linear-gradient(180deg, rgba(7, 11, 20, 0.98), rgba(3, 5, 11, 0.99));border:2px solid #22c55e;border-radius:11px;box-shadow:0 10px 30px rgba(0,0,0,0.95);z-index:2147483647;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;color:#fff;overflow:hidden;animation:panelFadeIn 0.2s ease-out;box-sizing:border-box;backdrop-filter:blur(8px);';
+                // Multi-color shifting border animation applied to panel
+                panel.style.cssText = 'position:fixed;top:44%;left:50%;transform:translate(-50%, -50%);width:212px;background:linear-gradient(180deg, rgba(7, 11, 20, 0.98), rgba(3, 5, 11, 0.99));border:2.5px solid #22c55e;border-radius:11px;animation:multiColorBorderShift 8s infinite ease-in-out, panelFadeIn 0.2s ease-out;z-index:2147483647;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;color:#fff;overflow:hidden;box-sizing:border-box;backdrop-filter:blur(8px);';
 
                 if(!isLicensed) {
                     panel.innerHTML = 
                         '<div style="padding:10px;box-sizing:border-box;position:relative;">' +
-                            '<div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:4px;margin-bottom:6px;">' +
-                                '<div style="display:flex;align-items:center;gap:4px;">' +
-                                    '<img src="' + botMainLogo + '" style="width:16px;height:16px;border-radius:50%;object-fit:cover;border:1px solid #22c55e;" />' +
+                            '<div id="sniper-panel-header" style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:4px;margin-bottom:6px;cursor:move;">' +
+                                '<div style="display:flex;align-items:center;gap:4px;pointer-events:none;">' +
+                                    '<img src="' + botMainLogo + '" style="width:16px;height:16px;border-radius:50%;object-fit:cover;border:1px solid #fff;" />' +
                                     '<div style="font-size:9.5px;font-weight:900;letter-spacing:0.5px;color:#fff;">SNIPER BOT</div>' +
                                 '</div>' +
                                 '<div style="display:flex;gap:3px;align-items:center;">' +
@@ -201,6 +210,7 @@ def bot_script():
                         '</div>';
 
                     d.body.appendChild(panel);
+                    makeDraggable(panel);
                     d.getElementById('sniper-close-btn').onclick = function() { 
                         panel.remove(); 
                         if(floatingBtn) floatingBtn.style.display = 'flex';
@@ -225,10 +235,10 @@ def bot_script():
                 panel.innerHTML = 
                     '<div style="padding:8px 7px;box-sizing:border-box;position:relative;display:flex;flex-direction:column;justify-content:space-between;">' +
                         '<div>' +
-                            // Header with Verified Badge & Minimize (-) Button
-                            '<div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:4px;margin-bottom:5px;">' +
-                                '<div style="display:flex;align-items:center;gap:4px;">' +
-                                    '<img src="' + botMainLogo + '" style="width:16px;height:16px;border-radius:50%;object-fit:cover;border:1px solid #22c55e;" />' +
+                            // Header with Draggable Handle, Verified Badge & Minimize (-) Button
+                            '<div id="sniper-panel-header" style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:4px;margin-bottom:5px;cursor:move;">' +
+                                '<div style="display:flex;align-items:center;gap:4px;pointer-events:none;">' +
+                                    '<img src="' + botMainLogo + '" style="width:16px;height:16px;border-radius:50%;object-fit:cover;border:1px solid #fff;" />' +
                                     '<div>' +
                                         '<div style="font-size:9.5px;font-weight:900;letter-spacing:0.5px;color:#fff;">SNIPER BOT</div>' +
                                         '<div style="display:flex;align-items:center;gap:2px;font-size:6.5px;color:#22c55e;font-weight:700;">' +
@@ -284,11 +294,12 @@ def bot_script():
                         // Bottom Footer with Live Detected Market and Quotex Live Timezone
                         '<div style="display:flex;justify-content:space-between;align-items:center;font-size:7px;color:#94a3b8;border-top:1px solid rgba(255,255,255,0.06);padding-top:3px;">' +
                             '<span id="sniper-market-display" style="color:#38bdf8;font-weight:bold;">' + marketInfo + '</span>' +
-                            '<span id="sniper-live-timer" style="color:#22c55e;font-weight:900;background:rgba(34,197,94,0.12);padding:1px 3px;border-radius:2.5px;">15:27:46</span>' +
+                            '<span id="sniper-live-timer" style="color:#22c55e;font-weight:900;background:rgba(34,197,94,0.12);padding:1px 3px;border-radius:2.5px;">15:40:33</span>' +
                         '</div>' +
                     '</div>';
 
                 d.body.appendChild(panel);
+                makeDraggable(panel);
 
                 d.getElementById('sniper-close-btn').onclick = function() {
                     stopAutoExecution();
@@ -360,6 +371,30 @@ def bot_script():
                 };
             }
 
+            function makeDraggable(panelEl) {
+                var header = d.getElementById('sniper-panel-header');
+                if(!header) return;
+                var pX = 0, pY = 0, mX = 0, mY = 0;
+                header.onmousedown = function(e) {
+                    e.preventDefault();
+                    mX = e.clientX; mY = e.clientY;
+                    d.onmouseup = closeDragElement;
+                    d.onmousemove = elementDrag;
+                };
+                function elementDrag(e) {
+                    e.preventDefault();
+                    pX = mX - e.clientX; pY = mY - e.clientY;
+                    mX = e.clientX; mY = e.clientY;
+                    panelEl.style.top = (panelEl.offsetTop - pY) + "px";
+                    panelEl.style.left = (panelEl.offsetLeft - pX) + "px";
+                    panelEl.style.transform = 'none';
+                }
+                function closeDragElement() {
+                    d.onmouseup = null;
+                    d.onmousemove = null;
+                }
+            }
+
             function run5sAutoSequence(panel) {
                 if(!autoLoopActive && currentMode === "5S" && !panel.isConnected) return;
                 var statusBadge = panel.querySelector('#sniper-status-badge');
@@ -372,7 +407,6 @@ def bot_script():
                 statusBadge.style.color = '#38bdf8';
                 statusBadge.style.background = 'rgba(56,189,248,0.2)';
 
-                // Perfectly Positioned Clear Dual ECG Scanner with adjusted vertical spacing & small text
                 candleBox.innerHTML = 
                     '<div style="position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;background:#05070d;border-radius:4px;overflow:hidden;padding:1px 0;">' +
                         '<div style="position:absolute;top:1px;left:4px;font-size:5.5px;font-weight:900;color:#ef4444;letter-spacing:0.3px;z-index:2;">AI SCANNER</div>' +
@@ -428,7 +462,6 @@ def bot_script():
 
                         executeTrade(isCall);
 
-                        // Wait for 5 seconds trade completion before next cycle
                         if(autoLoopActive && currentMode === "5S") {
                             autoTimer = setTimeout(function(){
                                 if(autoLoopActive && currentMode === "5S") run5sAutoSequence(panel);
@@ -447,17 +480,17 @@ def bot_script():
                 statusBadge.style.color = '#facc15';
                 statusBadge.style.background = 'rgba(250,204,21,0.18)';
 
-                // Professional Ladder Wave / Up-Down Scanner for 1M Standard Mode
+                // Professional 1M Scanner with AI SIGNAL ANALYZER text precisely at top-left border
                 candleBox.innerHTML = 
                     '<div style="position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#05070d;border-radius:4px;overflow:hidden;">' +
-                        '<div style="display:flex;gap:4px;align-items:center;animation:ladderWaveMotion 1.2s infinite ease-in-out;">' +
-                            '<div style="width:4px;height:14px;background:#38bdf8;border-radius:2px;box-shadow:0 0 6px #38bdf8;"></div>' +
-                            '<div style="width:4px;height:24px;background:#22c55e;border-radius:2px;box-shadow:0 0 6px #22c55e;"></div>' +
-                            '<div style="width:4px;height:34px;background:#facc15;border-radius:2px;box-shadow:0 0 8px #facc15;"></div>' +
-                            '<div style="width:4px;height:22px;background:#ef4444;border-radius:2px;box-shadow:0 0 6px #ef4444;"></div>' +
-                            '<div style="width:4px;height:12px;background:#38bdf8;border-radius:2px;box-shadow:0 0 6px #38bdf8;"></div>' +
+                        '<div style="position:absolute;top:1px;left:4px;font-size:5.5px;font-weight:900;color:#facc15;letter-spacing:0.3px;z-index:2;">AI SIGNAL ANALYZER</div>' +
+                        '<div style="display:flex;gap:5px;align-items:center;animation:analyzerWaveMotion 1.5s infinite ease-in-out;margin-top:4px;">' +
+                            '<div style="width:4.5px;height:16px;background:#38bdf8;border-radius:2px;box-shadow:0 0 6px #38bdf8;"></div>' +
+                            '<div style="width:4.5px;height:28px;background:#22c55e;border-radius:2px;box-shadow:0 0 8px #22c55e;"></div>' +
+                            '<div style="width:4.5px;height:36px;background:#facc15;border-radius:2px;box-shadow:0 0 10px #facc15;"></div>' +
+                            '<div style="width:4.5px;height:24px;background:#ef4444;border-radius:2px;box-shadow:0 0 8px #ef4444;"></div>' +
+                            '<div style="width:4.5px;height:14px;background:#a855f7;border-radius:2px;box-shadow:0 0 6px #a855f7;"></div>' +
                         '</div>' +
-                        '<div style="position:absolute;font-size:8px;font-weight:900;color:#fff;text-shadow:0 0 5px #000;">AI SIGNAL ANALYZER</div>' +
                     '</div>';
 
                 var scanSteps = [
@@ -557,4 +590,4 @@ def start_server():
     app.run(host='0.0.0.0', port=port)
 
 if __name__ == '__main__':
-    threading.Thread(target=start_server, daemon=True).start()
+    threading.Thread(target=run_server, daemon=True).start()
