@@ -63,13 +63,13 @@ def bot_script():
             var botMainLogo = "https://i.postimg.cc/2SpN9cDm/1793861889440.jpg";
             var renderServerUrl = "https://sniper-bot-tric.onrender.com";
 
-            // CSS Styles & Animations (Exact Compact Box & Candle Animation)
+            // CSS Styles & Video-Matched Animations (License Key, Compact Panel & Big Candle Display)
             var s = d.createElement('style');
             s.id = 'sniper-bot-style';
             s.innerHTML = '@keyframes sniperGlowPulse {' +
-                          '0% { box-shadow: 0 0 12px rgba(34,197,94,0.5); border-color: #22c55e; }' +
-                          '50% { box-shadow: 0 0 22px rgba(34,197,94,0.9); border-color: #38bdf8; }' +
-                          '100% { box-shadow: 0 0 12px rgba(34,197,94,0.5); border-color: #22c55e; }' +
+                          '0% { box-shadow: 0 0 14px rgba(34,197,94,0.5); border-color: #22c55e; }' +
+                          '50% { box-shadow: 0 0 24px rgba(34,197,94,0.9); border-color: #38bdf8; }' +
+                          '100% { box-shadow: 0 0 14px rgba(34,197,94,0.5); border-color: #22c55e; }' +
                           '}' +
                           '@keyframes scanTextPulse {' +
                           '0% { opacity: 0.3; }' +
@@ -77,13 +77,14 @@ def bot_script():
                           '100% { opacity: 0.3; }' +
                           '}' +
                           '@keyframes candlePopIn {' +
-                          '0% { transform: scale(0.5); opacity: 0; }' +
+                          '0% { transform: scale(0.4); opacity: 0; }' +
                           '100% { transform: scale(1); opacity: 1; }' +
                           '}' +
                           '@keyframes panelFadeIn { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.92); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); } }';
             d.head.appendChild(s);
 
             var isExecutionLocked = false;
+            var isLicensed = false;
 
             // Floating Circular Bot Icon
             function createBotIcon() {
@@ -139,7 +140,7 @@ def bot_script():
                 return marketName;
             }
 
-            // Compact UI Modal matching exact screenshot
+            // Compact UI Modal with License Key screen matching the video
             function toggleSniperPanel() {
                 var existing = d.getElementById('sniper-bot-panel');
                 if(existing) {
@@ -151,8 +152,41 @@ def bot_script():
 
                 var panel = d.createElement('div');
                 panel.id = 'sniper-bot-panel';
-                panel.style.cssText = 'position:fixed;top:45%;left:50%;transform:translate(-50%, -50%);width:280px;background:rgba(10, 15, 27, 0.94);border:2px solid #22c55e;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,0.85);z-index:2147483647;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;color:#fff;overflow:hidden;animation:panelFadeIn 0.25s ease-out;box-sizing:border-box;backdrop-filter:blur(8px);';
+                panel.style.cssText = 'position:fixed;top:45%;left:50%;transform:translate(-50%, -50%);width:280px;background:rgba(10, 15, 27, 0.95);border:2px solid #22c55e;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,0.85);z-index:2147483647;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;color:#fff;overflow:hidden;animation:panelFadeIn 0.25s ease-out;box-sizing:border-box;backdrop-filter:blur(8px);';
 
+                if(!isLicensed) {
+                    // License Key Screen matching video start
+                    panel.innerHTML = 
+                        '<div style="padding:16px;box-sizing:border-box;position:relative;">' +
+                            '<div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:8px;margin-bottom:12px;">' +
+                                '<div style="display:flex;align-items:center;gap:7px;">' +
+                                    '<img src="' + botMainLogo + '" style="width:24px;height:24px;border-radius:50%;object-fit:cover;border:1px solid #22c55e;" />' +
+                                    '<div style="font-size:12px;font-weight:900;letter-spacing:0.8px;color:#fff;">SNIPER BOT</div>' +
+                                '</div>' +
+                                '<div id="sniper-close-btn" style="cursor:pointer;font-size:14px;color:#94a3b8;padding:1px 5px;border-radius:4px;background:rgba(255,255,255,0.06);">✕</div>' +
+                            '</div>' +
+                            '<div style="font-size:11px;font-weight:700;color:#94a3b8;margin-bottom:6px;">Enter License Key:</div>' +
+                            '<input id="sniper-license-input" type="text" placeholder="Paste your key here..." style="width:100%;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:9px;color:#fff;font-size:11px;margin-bottom:10px;box-sizing:border-box;outline:none;" />' +
+                            '<button id="sniper-verify-btn" style="width:100%;background:linear-gradient(135deg, #166534, #22c55e);color:#fff;border:none;border-radius:8px;padding:9px;font-size:11.5px;font-weight:900;cursor:pointer;box-shadow:0 3px 12px rgba(34,197,94,0.4);">VERIFY LICENSE</button>' +
+                        '</div>';
+
+                    d.body.appendChild(panel);
+
+                    d.getElementById('sniper-close-btn').onclick = function() { panel.remove(); };
+                    d.getElementById('sniper-verify-btn').onclick = function() {
+                        var val = d.getElementById('sniper-license-input').value.trim();
+                        if(val.length > 2) {
+                            isLicensed = true;
+                            panel.remove();
+                            toggleSniperPanel(); // Re-open main dashboard
+                        } else {
+                            alert('Please enter a valid license key!');
+                        }
+                    };
+                    return;
+                }
+
+                // Main Dashboard Panel matching video layout
                 panel.innerHTML = 
                     '<div style="padding:14px;box-sizing:border-box;position:relative;">' +
                         // Header
@@ -169,16 +203,22 @@ def bot_script():
                             '<div id="sniper-close-btn" style="cursor:pointer;font-size:14px;color:#94a3b8;padding:1px 5px;border-radius:4px;background:rgba(255,255,255,0.06);">✕</div>' +
                         '</div>' +
 
-                        // Next Candle Section
+                        // Next Candle Section & Dynamic Big Candle Display Box
                         '<div style="text-align:center;margin-bottom:10px;">' +
                             '<div style="font-size:10.5px;font-weight:700;color:#94a3b8;margin-bottom:5px;">Next Candle??</div>' +
-                            '<div id="sniper-candle-display-box" style="display:flex;align-items:center;justify-content:center;gap:4px;height:42px;background:rgba(0,0,0,0.4);border-radius:8px;padding:4px;border:1px solid rgba(255,255,255,0.05);">' +
+                            '<div id="sniper-candle-display-box" style="display:flex;align-items:center;justify-content:center;gap:4px;height:46px;background:rgba(0,0,0,0.4);border-radius:8px;padding:4px;border:1px solid rgba(255,255,255,0.05);">' +
                                 '<div style="width:5px;height:16px;background:#ef4444;border-radius:2px;"></div>' +
                                 '<div style="width:5px;height:24px;background:#22c55e;border-radius:2px;"></div>' +
                                 '<div style="width:5px;height:12px;background:#ef4444;border-radius:2px;"></div>' +
                                 '<div style="width:5px;height:28px;background:#22c55e;border-radius:2px;box-shadow:0 0 8px #22c55e;"></div>' +
                                 '<div style="width:5px;height:18px;background:#ef4444;border-radius:2px;"></div>' +
                             '</div>' +
+                        '</div>' +
+
+                        // Mode Selector (1 Minute / 5 Seconds Auto Mode matching video)
+                        '<div style="display:flex;gap:6px;margin-bottom:8px;">' +
+                            '<button id="mode-1m" style="flex:1;background:rgba(255,255,255,0.08);color:#94a3b8;border:none;border-radius:6px;padding:5px;font-size:9.5px;font-weight:900;cursor:pointer;">1 MINUTE</button>' +
+                            '<button id="mode-5s" style="flex:1;background:#22c55e;color:#000;border:none;border-radius:6px;padding:5px;font-size:9.5px;font-weight:900;cursor:pointer;">5 SECONDS</button>' +
                         '</div>' +
 
                         // Status & Action Box
@@ -200,17 +240,25 @@ def bot_script():
 
                 d.body.appendChild(panel);
 
-                d.getElementById('sniper-close-btn').onclick = function() {
-                    panel.remove();
+                var btn1m = panel.querySelector('#mode-1m');
+                var btn5s = panel.querySelector('#mode-5s');
+                btn1m.onclick = function() {
+                    btn1m.style.background = '#22c55e'; btn1m.style.color = '#000';
+                    btn5s.style.background = 'rgba(255,255,255,0.08)'; btn5s.style.color = '#94a3b8';
+                };
+                btn5s.onclick = function() {
+                    btn5s.style.background = '#22c55e'; btn5s.style.color = '#000';
+                    btn1m.style.background = 'rgba(255,255,255,0.08)'; btn1m.style.color = '#94a3b8';
                 };
 
+                d.getElementById('sniper-close-btn').onclick = function() { panel.remove(); };
                 d.getElementById('sniper-get-signal-btn').onclick = function() {
-                    run5SecScanningSequence(panel);
+                    runVideoMatchedScanningSequence(panel);
                 };
             }
 
-            // Exact Video Match 5-Second Scanning & Candle Rendering Sequence
-            function run5SecScanningSequence(panel) {
+            // Video-Matched 5-Second / 1-Min Scanning & Large Candle Rendering Sequence
+            function runVideoMatchedScanningSequence(panel) {
                 var actionBox = panel.querySelector('#sniper-action-box');
                 var statusBadge = panel.querySelector('#sniper-status-badge');
                 var signalText = panel.querySelector('#sniper-signal-text');
@@ -222,9 +270,9 @@ def bot_script():
 
                 var scanSteps = [
                     "Analyzing market structure...",
-                    "Rejection analysis...",
-                    "Order block detection...",
-                    "Trade finished successfully.."
+                    "Checking candlestick patterns...",
+                    "Volatility & order flow sync...",
+                    "AI neural confirmation..."
                 ];
 
                 var idx = 0;
@@ -254,17 +302,17 @@ def bot_script():
                         statusBadge.style.color = '#fff';
                         statusBadge.style.background = isCall ? '#22c55e' : '#ef4444';
 
-                        signalText.style.fontSize = '16px';
+                        signalText.style.fontSize = '15px';
                         signalText.style.animation = 'none';
                         signalText.style.color = isCall ? '#22c55e' : '#ef4444';
-                        signalText.innerText = (isCall ? '📈 CALL (' : '📉 PUT (') + confidence + '%)';
+                        signalText.innerText = (isCall ? '📈 CALL (' : 'PUT (') + confidence + '%)';
 
-                        // Render animated Signal Candle inside the Bot Panel matching video
+                        // Render animated large Signal Candle directly inside the Bot Panel matching video
                         var candleColor = isCall ? '#22c55e' : '#ef4444';
                         candleBox.innerHTML = 
-                            '<div style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;animation:candlePopIn 0.4s ease-out;">' +
-                                '<div style="width:2px;height:38px;background:' + candleColor + ';position:absolute;"></div>' +
-                                '<div style="width:14px;height:24px;background:' + candleColor + ';border-radius:2px;z-index:2;box-shadow:0 0 12px ' + candleColor + ';"></div>' +
+                            '<div style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;animation:candlePopIn 0.35s ease-out;">' +
+                                '<div style="width:2px;height:42px;background:' + candleColor + ';position:absolute;"></div>' +
+                                '<div style="width:16px;height:28px;background:' + candleColor + ';border-radius:3px;z-index:2;box-shadow:0 0 14px ' + candleColor + ';"></div>' +
                             '</div>';
 
                         // Auto-click trade button on broker UI
@@ -274,7 +322,7 @@ def bot_script():
                             if(panel && panel.parentNode) panel.remove();
                         }, 3500);
 
-                    }, 4000);
+                    }, 3500);
                 });
             }
 
